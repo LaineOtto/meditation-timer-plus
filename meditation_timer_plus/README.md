@@ -19,7 +19,7 @@ Option to turn on Do Not Disturb
 Option to silence ringer
 Make run with screen off
 
-# Possible future features, in no particular order
+## Possible future features, in no particular order
 
 Changeable sound
 A dial for the countdown?
