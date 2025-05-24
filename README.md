@@ -5,8 +5,8 @@ A meditation timer/practice app that takes all the features I like into one plac
 
 ### Stopwatch/Countdown
 
-- [x] Simultaneous stopwatch and countdown, so that if you decide to go over your end planned time you can tell how long your full session was
-- [x] Program an order into countdown
+- Simultaneous stopwatch and countdown, so that if you decide to go over your end planned time you can tell how long your full session was
+- Program an order into countdown
   - e.g. 5min -> 5min -> 5min -> 30 min, etc
 - Enable user control of queue
 - Play bell/gong at each countdown timer finish
