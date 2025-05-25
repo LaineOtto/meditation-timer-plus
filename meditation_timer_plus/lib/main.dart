@@ -44,6 +44,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final Stopwatch stopwatch = Stopwatch();
+  Timer? stopwatchTimer;
 
   Timer? countdownTimer;
   Duration defaultTime = Duration(seconds: 30);
@@ -81,6 +82,11 @@ class _MyHomePageState extends State<MyHomePage> {
     print("start");
     stopwatch.start();
     countdownTimer?.cancel();
+    stopwatchTimer = Timer.periodic(Duration(seconds: 1), (_) {
+      if (stopwatch.isRunning) {
+        setState(() {});
+      }
+    });
 
     if (countdownQueue.isNotEmpty && isFirstRun == true) {
       currentMode = TimerMode.queue;
@@ -218,8 +224,9 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: Icon(Icons.stop_circle),
             ),
             TextButton(
-              onPressed: () => setTime([Duration(seconds: 45)]),
-              child: Text("45s"),
+              onPressed: () =>
+                  setTime([Duration(seconds: 5), Duration(seconds: 10)]),
+              child: Text("15s"),
             ),
           ],
         ),
