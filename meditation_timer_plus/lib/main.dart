@@ -229,6 +229,27 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
           },
           title: Text("Turn on DnD with timer?"),
         ),
+        CheckboxListTile(
+          value: state.overrideSystemSound,
+          onChanged: (bool? value) {
+            notifier.toggleOverrideSystemSound(!state.overrideSystemSound);
+          },
+          title: Text("Override system sound with timer?"),
+        ),
+        CheckboxListTile(
+          value: state.playSoundOnEachTimer,
+          onChanged: (bool? value) {
+            notifier.togglePlaySoundOnEachTimer(!state.playSoundOnEachTimer);
+          },
+          title: Text("Play sound for each timer?"),
+        ),
+        CheckboxListTile(
+          value: state.silenceRinger,
+          onChanged: (bool? value) {
+            notifier.toggleSilenceRinger(!state.silenceRinger);
+          },
+          title: Text("Silence ringer with timer?"),
+        ),
       ],
     );
   }
