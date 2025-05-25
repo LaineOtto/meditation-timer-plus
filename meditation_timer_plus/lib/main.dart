@@ -17,20 +17,6 @@ class MyApp extends StatelessWidget {
       title: 'Meditation Timer Plus',
       theme: ThemeData(
         // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       home: const MyHomePage(title: 'Meditation Timer Plus'),
@@ -65,35 +51,38 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Duration> countdownQueue = [];
   TimerMode currentMode = TimerMode.single;
 
-  int currentIndex = 0;
-
   bool isRunning = false;
   bool isFirstRun = true;
   IconData currentIcon = Icons.play_circle_fill;
   bool countdownFinished = false;
 
-  void toggleTimers () {
-    print("Icon now start toggle: $currentIcon, isRunning: $isRunning");
+  int _currentPageIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    countdownTimerRemaining = defaultTime;
+  }
+
+  void toggleTimers() {
     setState(() {
       if (isRunning) {
         pauseTimers();
         currentIcon = Icons.play_circle_filled;
-        print("pause");
       } else {
         startTimers();
         currentIcon = Icons.pause_circle_filled;
-        print("play");
       }
       isRunning = !isRunning;
     });
-    print("Icon now end toggle: $currentIcon, isRunning: $isRunning \n break");
   }
 
   void startTimers() {
+    print("start");
     stopwatch.start();
     countdownTimer?.cancel(); 
 
-    if (countdownQueue.isNotEmpty) {
+    if (countdownQueue.isNotEmpty && isFirstRun == true) {
       currentMode = TimerMode.queue;
       countdownTimerRemaining = countdownQueue.removeAt(0);
     } else if (isFirstRun == true) {
@@ -126,7 +115,8 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  void pauseTimers () {
+  void pauseTimers() {
+    print("pause");
     setState(() {
       stopwatch.stop();
       countdownTimer?.cancel();
@@ -138,7 +128,6 @@ class _MyHomePageState extends State<MyHomePage> {
       stopwatch.stop();
       stopwatch.reset();
       countdownTimer?.cancel();
-      print("default time in reset func: $defaultTime");
       countdownTimerRemaining = defaultTime;
       print("time remaining: ${countdownTimerRemaining.inSeconds}");
       isRunning = false;
@@ -155,15 +144,31 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
+    // This method is rerun every time setState is called
+
+    List<Widget> pages = [_buildTimerPage(), _buildSettingsPage()];
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
+      body: Center(child: pages[_currentPageIndex]),
+
+      bottomNavigationBar: NavigationBar(
+        onDestinationSelected: _onNavBarTap,
+        destinations: const [
+          NavigationDestination(icon: Icon(Icons.timer_sharp), label: 'Timer'),
+          NavigationDestination(icon: Icon(Icons.settings), label: 'Settings'),
+        ],
+        selectedIndex: _currentPageIndex,
+      ),
+    );
+  }
+
+  // Main Page
+  Widget _buildTimerPage() {
+    return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
@@ -171,13 +176,13 @@ class _MyHomePageState extends State<MyHomePage> {
               style: Theme.of(context).textTheme.headlineMedium,
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 20,),
+        SizedBox(height: 20),
             Text(
               "Stopwatch: ${stopwatch.elapsed.inSeconds}",
               style: Theme.of(context).textTheme.headlineMedium,
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 20,),
+        SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -186,7 +191,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: toggleTimers,
                   icon: Icon(currentIcon),
                 ),
-                SizedBox(width: 15,),
+            SizedBox(width: 15),
                 IconButton(
                   iconSize: 72,
                   onPressed: resetTimers,
@@ -196,7 +201,20 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
         ),
+      ],
+    );
+  }
+
+  Widget _buildSettingsPage() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          "Settings Page :)",
+          style: Theme.of(context).textTheme.headlineMedium,
+          textAlign: TextAlign.center,
       ),
+      ],
     );
   }
 }
