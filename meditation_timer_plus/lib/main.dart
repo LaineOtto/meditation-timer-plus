@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'dart:async';
 import 'package:flutter/cupertino.dart';
 
 import 'timer_notifier.dart';
 import 'timer_state.dart';
+import 'settings_notifier.dart';
+import 'settings_state.dart';
 
 final timerNotifierProvider = StateNotifierProvider<TimerNotifier, TimerState>((
   ref,
 ) {
   return TimerNotifier();
 });
+
+final settingsNotifierProvider =
+    StateNotifierProvider<SettingsNotifier, SettingsState>((ref,) {
+      return SettingsNotifier();
+    });
 
 enum TimerMode { single, queue }
 
@@ -114,6 +120,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
         ),
       );
     }
+
     pickNextDuration();
   }
 
@@ -165,11 +172,15 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
 
   // Main Page
   Widget _buildTimerPage(state, notifier) {
+    final minutes = state.countdownRemaining.inMinutes;
+    final seconds = state.countdownRemaining.inSeconds % 60;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        // TODO: add total time visible here, format it to look prettier
         Text(
-          "Time Remaining: ${state.countdownRemaining.inSeconds} seconds",
+          "Time Remaining: $minutes minute${minutes != 1 ? 's' : ''}, $seconds second${seconds != 1 ? 's' : ''}",
           style: Theme.of(context).textTheme.headlineMedium,
           textAlign: TextAlign.center,
         ),
@@ -208,6 +219,17 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
           "Settings Page :)",
           style: Theme.of(context).textTheme.headlineMedium,
           textAlign: TextAlign.center,
+        ),
+        CheckboxListTile(
+          value: false,
+          onChanged: (bool? value) {
+            if (value == null || value == false) {
+              value = true;
+            } else {
+              value = false;
+            }
+          },
+          title: Text("Turn on DnD with timer?"),
         ),
       ],
     );
