@@ -74,6 +74,17 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
+        actions: _currentPageIndex == 0 ? [
+          MenuAnchor(
+            menuChildren: [
+              MenuItemButton(
+                onPressed: () => print("button press"),
+                child: Text("Button 1"),
+              )
+            ],
+            builder: (context, controller, child) => IconButton(onPressed: controller.open, icon: Icon(Icons.menu))
+          )
+        ] : [],
       ),
       body: Center(child: pages[_currentPageIndex]),
 
