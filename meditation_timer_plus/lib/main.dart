@@ -225,7 +225,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
         CheckboxListTile(
           value: state.timerStartsDnD,
           onChanged: (bool? value) {
-            print("changed");
+            notifier.toggleTimerStartsDnD(!state.timerStartsDnD);
           },
           title: Text("Turn on DnD with timer?"),
         ),
