@@ -64,31 +64,57 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
   void _showTimePickerDialog(context) {
     final timerNotifier = ref.read(timerNotifierProvider.notifier);
     final currentDuration = ref.read(timerNotifierProvider).countdownRemaining;
+    final List<Duration> queue = [];
 
-    showCupertinoModalPopup(
-      context: context,
-      builder: (_) => Container(
-        height: 300,
-        child: Column(
-          children: [
-            SizedBox(
-              height: 200,
-              child: CupertinoTimerPicker(
-                mode: CupertinoTimerPickerMode.hm,
-                initialTimerDuration: currentDuration,
-                onTimerDurationChanged: (Duration newDuration) {
-                  timerNotifier.updateInitialDuration(newDuration);
-                },
+    void pickNextDuration() {
+      Duration selected = const Duration(minutes: 1);
+
+      showCupertinoModalPopup(
+        context: context,
+        builder: (_) => Container(
+          height: 300,
+          color: CupertinoColors.systemBackground.resolveFrom(context),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 200,
+                child: CupertinoTimerPicker(
+                  mode: CupertinoTimerPickerMode.hm,
+                  initialTimerDuration: currentDuration,
+                  onTimerDurationChanged: (d) => selected = d,
+                ),
               ),
-            ),
-            CupertinoButton(
-              child: Text("Done"),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  CupertinoButton(
+                    child: const Text('Add another'),
+                    onPressed: () {
+                      queue.add(selected);
+                      Navigator.of(context).pop();
+                      pickNextDuration();
+                    },
+                  ),
+                  CupertinoButton(
+                    child: Text("Done"),
+                    onPressed: () {
+                      queue.add(selected);
+                      Navigator.of(context).pop();
+                      if (queue.length == 1) {
+                        timerNotifier.updateInitialDuration(selected);
+                      } else {
+                        timerNotifier.setTime(queue);
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
+    pickNextDuration();
   }
 
   @override
@@ -167,13 +193,6 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
               iconSize: 72,
               onPressed: notifier.resetTimers,
               icon: Icon(Icons.stop_circle),
-            ),
-            TextButton(
-              onPressed: () => notifier.setTime([
-                Duration(seconds: 5),
-                Duration(seconds: 10),
-              ]),
-              child: Text("15s"),
             ),
           ],
         ),
