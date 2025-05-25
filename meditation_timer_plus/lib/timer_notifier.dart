@@ -15,6 +15,15 @@ class TimerNotifier extends StateNotifier<TimerState> {
   Timer? _countdownTimer;
   bool _isFirstRun = true;
 
+  void updateInitialDuration(Duration duration) {
+    _isFirstRun = false;
+    state = state.copyWith(
+      countdownRemaining: duration,
+      countdownQueue: [],
+      currentMode: TimerMode.single,
+    );
+  }
+
   void startTimers() {
     if (state.isRunning) return;
 
@@ -39,7 +48,8 @@ class TimerNotifier extends StateNotifier<TimerState> {
         countdownQueue: List.from(state.countdownQueue)..removeAt(0),
       );
 
-      final immediateRemaining = state.countdownRemaining - Duration(seconds: 1);
+      final immediateRemaining =
+          state.countdownRemaining - Duration(seconds: 1);
       if (immediateRemaining > Duration.zero) {
         state = state.copyWith(countdownRemaining: immediateRemaining);
       }
@@ -75,7 +85,8 @@ class TimerNotifier extends StateNotifier<TimerState> {
     if (state.countdownRemaining > Duration.zero) {
       final newRemaining = state.countdownRemaining - Duration(seconds: 1);
       state = state.copyWith(countdownRemaining: newRemaining);
-    } else if (state.currentMode == TimerMode.queue && state.countdownQueue.isNotEmpty) {
+    } else if (state.currentMode == TimerMode.queue &&
+        state.countdownQueue.isNotEmpty) {
       final newQueue = List<Duration>.from(state.countdownQueue);
       final nextDuration = newQueue.removeAt(0);
       state = state.copyWith(
@@ -128,13 +139,11 @@ class TimerNotifier extends StateNotifier<TimerState> {
 
     if (times.length == 1) {
       state = state.copyWith(countdownRemaining: times[0]);
-      startTimers();
     } else {
       state = state.copyWith(
         countdownQueue: List.from(times),
         countdownRemaining: times[0],
       );
-      startTimers();
     }
   }
 }

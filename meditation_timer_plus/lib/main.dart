@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 
 import 'timer_notifier.dart';
 import 'timer_state.dart';
@@ -52,7 +53,6 @@ class MyHomePage extends ConsumerStatefulWidget {
 }
 
 class _MyHomePageState extends ConsumerState<MyHomePage> {
-
   int _currentPageIndex = 0;
 
   void _onNavBarTap(int index) {
@@ -61,30 +61,68 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
     });
   }
 
+  void _showTimePickerDialog(context) {
+    final timerNotifier = ref.read(timerNotifierProvider.notifier);
+    final currentDuration = ref.read(timerNotifierProvider).countdownRemaining;
+
+    showCupertinoModalPopup(
+      context: context,
+      builder: (_) => Container(
+        height: 300,
+        child: Column(
+          children: [
+            SizedBox(
+              height: 200,
+              child: CupertinoTimerPicker(
+                mode: CupertinoTimerPickerMode.hm,
+                initialTimerDuration: currentDuration,
+                onTimerDurationChanged: (Duration newDuration) {
+                  timerNotifier.updateInitialDuration(newDuration);
+                },
+              ),
+            ),
+            CupertinoButton(
+              child: Text("Done"),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called
-    
+
     final timerState = ref.watch(timerNotifierProvider);
     final timerNotifier = ref.read(timerNotifierProvider.notifier);
 
-    List<Widget> pages = [_buildTimerPage(timerState, timerNotifier), _buildSettingsPage()];
+    List<Widget> pages = [
+      _buildTimerPage(timerState, timerNotifier),
+      _buildSettingsPage(),
+    ];
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
-        actions: _currentPageIndex == 0 ? [
-          MenuAnchor(
-            menuChildren: [
-              MenuItemButton(
-                onPressed: () => print("button press"),
-                child: Text("Button 1"),
-              )
-            ],
-            builder: (context, controller, child) => IconButton(onPressed: controller.open, icon: Icon(Icons.menu))
-          )
-        ] : [],
+        actions: _currentPageIndex == 0
+            ? [
+                MenuAnchor(
+                  menuChildren: [
+                    MenuItemButton(
+                      onPressed: () => _showTimePickerDialog(context),
+                      child: Text("Set Timer Duration"),
+                    ),
+                  ],
+                  builder: (context, controller, child) => IconButton(
+                    onPressed: controller.open,
+                    icon: Icon(Icons.menu),
+                  ),
+                ),
+              ]
+            : [],
       ),
       body: Center(child: pages[_currentPageIndex]),
 
@@ -131,8 +169,10 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
               icon: Icon(Icons.stop_circle),
             ),
             TextButton(
-              onPressed: () =>
-                  notifier.setTime([Duration(seconds: 5), Duration(seconds: 10)]),
+              onPressed: () => notifier.setTime([
+                Duration(seconds: 5),
+                Duration(seconds: 10),
+              ]),
               child: Text("15s"),
             ),
           ],
