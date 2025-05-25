@@ -130,10 +130,12 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
 
     final timerState = ref.watch(timerNotifierProvider);
     final timerNotifier = ref.read(timerNotifierProvider.notifier);
+    final settingsState = ref.watch(settingsNotifierProvider);
+    final settingsNotifier = ref.read(settingsNotifierProvider.notifier);
 
     List<Widget> pages = [
       _buildTimerPage(timerState, timerNotifier),
-      _buildSettingsPage(),
+      _buildSettingsPage(settingsState, settingsNotifier),
     ];
 
     return Scaffold(
@@ -211,7 +213,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
     );
   }
 
-  Widget _buildSettingsPage() {
+  Widget _buildSettingsPage(state, notifier) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -221,13 +223,9 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
           textAlign: TextAlign.center,
         ),
         CheckboxListTile(
-          value: false,
+          value: state.timerStartsDnD,
           onChanged: (bool? value) {
-            if (value == null || value == false) {
-              value = true;
-            } else {
-              value = false;
-            }
+            print("changed");
           },
           title: Text("Turn on DnD with timer?"),
         ),

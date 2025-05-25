@@ -6,5 +6,8 @@ import 'settings_state.dart';
 class SettingsNotifier extends StateNotifier<SettingsState> {
   SettingsNotifier() : super(SettingsState.initial());
 
-  
+  void toggleTimerStartsDnD(bool isChecked){
+    state = state.copyWith(timerStartsDnD: isChecked);
+    print(state);
+  }
 }
