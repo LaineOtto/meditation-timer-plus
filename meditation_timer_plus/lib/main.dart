@@ -80,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void startTimers() {
     print("start");
     stopwatch.start();
-    countdownTimer?.cancel(); 
+    countdownTimer?.cancel();
 
     if (countdownQueue.isNotEmpty && isFirstRun == true) {
       currentMode = TimerMode.queue;
@@ -136,10 +136,29 @@ class _MyHomePageState extends State<MyHomePage> {
     print("state reset");
   }
 
-  @override
-  void initState() {
-    super.initState();
-    countdownTimerRemaining = defaultTime;
+  void setTime(List<Duration> times) {
+    isFirstRun = false;
+    resetTimers(); //reset so that everything initializes well
+    if (times.length == 1) {
+      //set time
+      countdownTimerRemaining = times[0];
+      startTimers();
+      print("set time len 1");
+    } else if (times.length > 1) {
+      //set queue of times
+      countdownQueue = times;
+      countdownTimerRemaining = countdownQueue[0];
+      startTimers();
+      print("set time len 2");
+    } else {
+      print("number of times to set in setTime is 0");
+    }
+  }
+
+  void _onNavBarTap(int index) {
+    setState(() {
+      _currentPageIndex = index;
+    });
   }
 
   @override
@@ -169,35 +188,38 @@ class _MyHomePageState extends State<MyHomePage> {
   // Main Page
   Widget _buildTimerPage() {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        // MenuAnchor(menuChildren: menuChildren)
+        Text(
+          "Time Remaining: ${countdownTimerRemaining.inSeconds} seconds",
+          style: Theme.of(context).textTheme.headlineMedium,
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(height: 20),
+        Text(
+          "Stopwatch: ${stopwatch.elapsed.inSeconds}",
+          style: Theme.of(context).textTheme.headlineMedium,
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(height: 20),
+        Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              "Time Remaining: ${countdownTimerRemaining.inSeconds} seconds",
-              style: Theme.of(context).textTheme.headlineMedium,
-              textAlign: TextAlign.center,
+            IconButton(
+              iconSize: 72,
+              onPressed: toggleTimers,
+              icon: Icon(currentIcon),
             ),
-        SizedBox(height: 20),
-            Text(
-              "Stopwatch: ${stopwatch.elapsed.inSeconds}",
-              style: Theme.of(context).textTheme.headlineMedium,
-              textAlign: TextAlign.center,
-            ),
-        SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  iconSize: 72,
-                  onPressed: toggleTimers,
-                  icon: Icon(currentIcon),
-                ),
             SizedBox(width: 15),
-                IconButton(
-                  iconSize: 72,
-                  onPressed: resetTimers,
-                  icon: Icon(Icons.stop_circle),
-                ),
-              ],
+            IconButton(
+              iconSize: 72,
+              onPressed: resetTimers,
+              icon: Icon(Icons.stop_circle),
+            ),
+            TextButton(
+              onPressed: () => setTime([Duration(seconds: 45)]),
+              child: Text("45s"),
             ),
           ],
         ),
@@ -213,7 +235,7 @@ class _MyHomePageState extends State<MyHomePage> {
           "Settings Page :)",
           style: Theme.of(context).textTheme.headlineMedium,
           textAlign: TextAlign.center,
-      ),
+        ),
       ],
     );
   }
