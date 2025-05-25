@@ -10,7 +10,7 @@ class TimerNotifier extends StateNotifier<TimerState> {
     _stopwatch = Stopwatch();
   }
 
-  Stopwatch? _stopwatch;
+  late Stopwatch _stopwatch;
   Timer? _stopwatchTimer;
   Timer? _countdownTimer;
   bool _isFirstRun = true;
@@ -27,13 +27,12 @@ class TimerNotifier extends StateNotifier<TimerState> {
   void startTimers() {
     if (state.isRunning) return;
 
-    _stopwatch ??= Stopwatch();
-    _stopwatch!.start();
+    _stopwatch.start();
 
     _stopwatchTimer?.cancel();
     _stopwatchTimer = Timer.periodic(Duration(seconds: 1), (_) {
-      if (_stopwatch!.isRunning) {
-        state = state.copyWith(stopwatchElapsed: _stopwatch!.elapsed);
+      if (_stopwatch.isRunning) {
+        state = state.copyWith(stopwatchElapsed: _stopwatch.elapsed);
       }
     });
 
@@ -104,7 +103,7 @@ class TimerNotifier extends StateNotifier<TimerState> {
   }
 
   void pauseTimers() {
-    _stopwatch?.stop();
+    _stopwatch.stop();
     _countdownTimer?.cancel();
     _stopwatchTimer?.cancel();
 
@@ -115,8 +114,8 @@ class TimerNotifier extends StateNotifier<TimerState> {
   }
 
   void resetTimers() {
-    _stopwatch?.stop();
-    _stopwatch?.reset();
+    _stopwatch.stop();
+    _stopwatch.reset();
     _countdownTimer?.cancel();
     _stopwatchTimer?.cancel();
     _isFirstRun = true;
