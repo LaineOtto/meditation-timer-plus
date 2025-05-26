@@ -253,9 +253,9 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
               value: state.volumeOverrideValue,
               onChanged: (double value) => notifier.setVolumeOverrideValue(value),
               min: 0,
-              max: 100,
+              max: 1,
               divisions: 100,
-              label: "${state.volumeOverrideValue.toInt()}",
+              label: "${((state.volumeOverrideValue * 100).toInt())}",
             
             ),
           ],
