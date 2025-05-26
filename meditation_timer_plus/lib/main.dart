@@ -14,7 +14,7 @@ final timerNotifierProvider = StateNotifierProvider<TimerNotifier, TimerState>((
 });
 
 final settingsNotifierProvider =
-    StateNotifierProvider<SettingsNotifier, SettingsState>((ref,) {
+    StateNotifierProvider<SettingsNotifier, SettingsState>((ref) {
       return SettingsNotifier();
     });
 
@@ -213,6 +213,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
     );
   }
 
+  //Settings Page
   Widget _buildSettingsPage(state, notifier) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -225,28 +226,40 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
         CheckboxListTile(
           value: state.timerStartsDnD,
           onChanged: (bool? value) {
-            notifier.toggleTimerStartsDnD(!state.timerStartsDnD);
+            notifier.toggleTimerSettings(
+              timerSetting.timerStartsDnD,
+              !state.timerStartsDnD,
+            );
           },
           title: Text("Turn on DnD with timer?"),
         ),
         CheckboxListTile(
           value: state.overrideSystemSound,
           onChanged: (bool? value) {
-            notifier.toggleOverrideSystemSound(!state.overrideSystemSound);
+            notifier.toggleTimerSettings(
+              timerSetting.overrideSystemSound,
+              !state.overrideSystemSound,
+            );
           },
           title: Text("Override system sound with timer?"),
         ),
         CheckboxListTile(
           value: state.playSoundOnEachTimer,
           onChanged: (bool? value) {
-            notifier.togglePlaySoundOnEachTimer(!state.playSoundOnEachTimer);
+            notifier.toggleTimerSettings(
+              timerSetting.playSoundOnEachTimer,
+              !state.playSoundOnEachTimer,
+            );
           },
           title: Text("Play sound for each timer?"),
         ),
         CheckboxListTile(
           value: state.silenceRinger,
           onChanged: (bool? value) {
-            notifier.toggleSilenceRinger(!state.silenceRinger);
+            notifier.toggleTimerSettings(
+              timerSetting.silenceRinger,
+              !state.silenceRinger,
+            );
           },
           title: Text("Silence ringer with timer?"),
         ),
