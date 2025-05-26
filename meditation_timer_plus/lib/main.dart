@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 
 import 'timer_notifier.dart';
 import 'timer_state.dart';
@@ -20,7 +21,10 @@ final settingsNotifierProvider =
 
 enum TimerMode { single, queue }
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await AndroidAlarmManager.initialize();
+
   runApp(const ProviderScope(child: MyApp()));
 }
 

@@ -23,6 +23,7 @@ mixin _$SettingsState {
   bool get playSoundOnEachTimer => throw _privateConstructorUsedError;
   bool get silenceRinger => throw _privateConstructorUsedError;
   double get volumeOverrideValue => throw _privateConstructorUsedError;
+  bool get runWithScreenOff => throw _privateConstructorUsedError;
 
   /// Create a copy of SettingsState
   /// with the given fields replaced by the non-null parameter values.
@@ -45,6 +46,7 @@ abstract class $SettingsStateCopyWith<$Res> {
     bool playSoundOnEachTimer,
     bool silenceRinger,
     double volumeOverrideValue,
+    bool runWithScreenOff,
   });
 }
 
@@ -69,6 +71,7 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
     Object? playSoundOnEachTimer = null,
     Object? silenceRinger = null,
     Object? volumeOverrideValue = null,
+    Object? runWithScreenOff = null,
   }) {
     return _then(
       _value.copyWith(
@@ -96,6 +99,10 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
                 ? _value.volumeOverrideValue
                 : volumeOverrideValue // ignore: cast_nullable_to_non_nullable
                       as double,
+            runWithScreenOff: null == runWithScreenOff
+                ? _value.runWithScreenOff
+                : runWithScreenOff // ignore: cast_nullable_to_non_nullable
+                      as bool,
           )
           as $Val,
     );
@@ -118,6 +125,7 @@ abstract class _$$SettingsStateImplCopyWith<$Res>
     bool playSoundOnEachTimer,
     bool silenceRinger,
     double volumeOverrideValue,
+    bool runWithScreenOff,
   });
 }
 
@@ -141,6 +149,7 @@ class __$$SettingsStateImplCopyWithImpl<$Res>
     Object? playSoundOnEachTimer = null,
     Object? silenceRinger = null,
     Object? volumeOverrideValue = null,
+    Object? runWithScreenOff = null,
   }) {
     return _then(
       _$SettingsStateImpl(
@@ -168,6 +177,10 @@ class __$$SettingsStateImplCopyWithImpl<$Res>
             ? _value.volumeOverrideValue
             : volumeOverrideValue // ignore: cast_nullable_to_non_nullable
                   as double,
+        runWithScreenOff: null == runWithScreenOff
+            ? _value.runWithScreenOff
+            : runWithScreenOff // ignore: cast_nullable_to_non_nullable
+                  as bool,
       ),
     );
   }
@@ -183,6 +196,7 @@ class _$SettingsStateImpl implements _SettingsState {
     required this.playSoundOnEachTimer,
     required this.silenceRinger,
     required this.volumeOverrideValue,
+    required this.runWithScreenOff,
   });
 
   @override
@@ -197,10 +211,12 @@ class _$SettingsStateImpl implements _SettingsState {
   final bool silenceRinger;
   @override
   final double volumeOverrideValue;
+  @override
+  final bool runWithScreenOff;
 
   @override
   String toString() {
-    return 'SettingsState(timerStartsDnD: $timerStartsDnD, soundVolume: $soundVolume, overrideSystemVolume: $overrideSystemVolume, playSoundOnEachTimer: $playSoundOnEachTimer, silenceRinger: $silenceRinger, volumeOverrideValue: $volumeOverrideValue)';
+    return 'SettingsState(timerStartsDnD: $timerStartsDnD, soundVolume: $soundVolume, overrideSystemVolume: $overrideSystemVolume, playSoundOnEachTimer: $playSoundOnEachTimer, silenceRinger: $silenceRinger, volumeOverrideValue: $volumeOverrideValue, runWithScreenOff: $runWithScreenOff)';
   }
 
   @override
@@ -219,7 +235,9 @@ class _$SettingsStateImpl implements _SettingsState {
             (identical(other.silenceRinger, silenceRinger) ||
                 other.silenceRinger == silenceRinger) &&
             (identical(other.volumeOverrideValue, volumeOverrideValue) ||
-                other.volumeOverrideValue == volumeOverrideValue));
+                other.volumeOverrideValue == volumeOverrideValue) &&
+            (identical(other.runWithScreenOff, runWithScreenOff) ||
+                other.runWithScreenOff == runWithScreenOff));
   }
 
   @override
@@ -231,6 +249,7 @@ class _$SettingsStateImpl implements _SettingsState {
     playSoundOnEachTimer,
     silenceRinger,
     volumeOverrideValue,
+    runWithScreenOff,
   );
 
   /// Create a copy of SettingsState
@@ -250,6 +269,7 @@ abstract class _SettingsState implements SettingsState {
     required final bool playSoundOnEachTimer,
     required final bool silenceRinger,
     required final double volumeOverrideValue,
+    required final bool runWithScreenOff,
   }) = _$SettingsStateImpl;
 
   @override
@@ -264,6 +284,8 @@ abstract class _SettingsState implements SettingsState {
   bool get silenceRinger;
   @override
   double get volumeOverrideValue;
+  @override
+  bool get runWithScreenOff;
 
   /// Create a copy of SettingsState
   /// with the given fields replaced by the non-null parameter values.

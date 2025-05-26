@@ -1,8 +1,15 @@
 import 'dart:async';
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'timer_state.dart';
+
+
+@pragma('vm:entry-point')
+void alarmCallback() {
+  print("alarm called");
+}
 
 class TimerNotifier extends StateNotifier<TimerState> {
   TimerNotifier() : super(TimerState.initial()) {
@@ -20,6 +27,18 @@ class TimerNotifier extends StateNotifier<TimerState> {
       countdownRemaining: duration,
       countdownQueue: [],
       currentMode: TimerMode.single,
+    );
+  }
+
+  Future<void> scheduleAlarm(Duration after) async {
+    final alarmId = 0;
+    await AndroidAlarmManager.oneShot(
+      after,
+      alarmId,
+      alarmCallback,
+      allowWhileIdle: true,
+      rescheduleOnReboot: true,
+      wakeup: true,
     );
   }
 
@@ -67,6 +86,9 @@ class TimerNotifier extends StateNotifier<TimerState> {
         countdownRemaining: countdownRemaining,
       );
     }
+
+    scheduleAlarm(Duration(seconds: 10));
+    print("schedule called");
 
     _countdownTimer?.cancel();
     _countdownTimer = Timer.periodic(Duration(seconds: 1), (timer) {

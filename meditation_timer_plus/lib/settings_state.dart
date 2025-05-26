@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 part 'settings_state.freezed.dart';
 
@@ -12,6 +11,7 @@ class SettingsState with _$SettingsState {
     required bool playSoundOnEachTimer,
     required bool silenceRinger,
     required double volumeOverrideValue,
+    required bool runWithScreenOff,
   }) = _SettingsState;
 
   factory SettingsState.initial() => const SettingsState(
@@ -20,6 +20,7 @@ class SettingsState with _$SettingsState {
     overrideSystemVolume: true,
     playSoundOnEachTimer: true,
     silenceRinger: true,
-    volumeOverrideValue: 0
+    volumeOverrideValue: 0,
+    runWithScreenOff: true,
   );
 }
