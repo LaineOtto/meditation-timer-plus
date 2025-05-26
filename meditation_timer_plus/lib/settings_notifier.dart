@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_volume_controller/flutter_volume_controller.dart';
 import 'package:do_not_disturb/do_not_disturb.dart';
+import 'package:sound_mode/sound_mode.dart';
+import 'package:sound_mode/utils/ringer_mode_statuses.dart';
 
 import 'settings_state.dart';
 
@@ -51,31 +53,28 @@ class SettingsNotifier extends StateNotifier<SettingsState> {
     );
   }
 
-  Future<void> silenceRinger(double value) async {
-    await FlutterVolumeController.updateShowSystemUI(
-      true,
-    ); //TODO: set as false once testing is done for uix purposes
-    await FlutterVolumeController.setVolume(0, stream: AudioStream.ring);
-  }
-
-  // Future<void> enableDnD () async {
-  //   bool accessGranted = (await FlutterDnd.isNotificationPolicyAccessGranted) ?? false;
-  //   if (accessGranted) {
-  //     await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_NONE); // Turn on DND - All notifications are suppressed.
-  //   } else {
-  //     FlutterDnd.gotoPolicySettings();
-  //   }
-  // }
-
   final dndPlugin = DoNotDisturbPlugin();
-  Future<void> enableDnD() async {
-    bool isDnDEnabled = await dndPlugin.isNotificationPolicyAccessGranted();
-    print("isDnDEnabled: $isDnDEnabled");
-    if (isDnDEnabled) {
-      print("enable dnd");
-      await dndPlugin.setInterruptionFilter(InterruptionFilter.none);
+  Future<bool> checkNotificationPolicyAccess() async {
+    bool accessGranted = await dndPlugin.isNotificationPolicyAccessGranted();
+    if (accessGranted) {
+      return true;
     } else {
       await dndPlugin.openNotificationPolicyAccessSettings();
+      return false;
+    }
+  }
+
+  Future<void> enableDnD() async {
+    bool isDnDEnabled = await checkNotificationPolicyAccess();
+    if (isDnDEnabled) {
+      await dndPlugin.setInterruptionFilter(InterruptionFilter.none);
+    }
+  }
+
+  Future<void> silenceRinger() async {
+    bool isDnDEnabled = await checkNotificationPolicyAccess();
+    if (isDnDEnabled) {
+      await SoundMode.setSoundMode(RingerModeStatus.silent);
     }
   }
 }

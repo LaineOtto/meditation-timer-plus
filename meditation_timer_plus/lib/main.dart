@@ -206,9 +206,6 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
     settingsState,
     settingsNotifier,
   ) {
-    final minutes = timerState.countdownRemaining.inMinutes;
-    final seconds = timerState.countdownRemaining.inSeconds % 60;
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
