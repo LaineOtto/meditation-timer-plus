@@ -15,7 +15,7 @@
 
 ### Don't distract, be reliable
 
-- Option to turn on Do Not Disturb
+- [x] Option to turn on Do Not Disturb
 - Option to silence ringer
 - Make run with screen off
 
