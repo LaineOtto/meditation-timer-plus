@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_volume_controller/flutter_volume_controller.dart';
+import 'package:do_not_disturb/do_not_disturb.dart';
 
 import 'settings_state.dart';
 
@@ -13,11 +14,15 @@ enum TimerSetting {
 class SettingsNotifier extends StateNotifier<SettingsState> {
   SettingsNotifier() : super(SettingsState.initial());
 
-  void toggleTimerSettings (TimerSetting setting, bool isChecked) {
+  void toggleTimerSettings(TimerSetting setting, bool isChecked) {
     state = switch (setting) {
       TimerSetting.timerStartsDnD => state.copyWith(timerStartsDnD: isChecked),
-      TimerSetting.overrideSystemVolume => state.copyWith(overrideSystemVolume: isChecked),
-      TimerSetting.playSoundOnEachTimer => state.copyWith(playSoundOnEachTimer: isChecked),
+      TimerSetting.overrideSystemVolume => state.copyWith(
+        overrideSystemVolume: isChecked,
+      ),
+      TimerSetting.playSoundOnEachTimer => state.copyWith(
+        playSoundOnEachTimer: isChecked,
+      ),
       TimerSetting.silenceRinger => state.copyWith(silenceRinger: isChecked),
     };
     print(state);
@@ -27,25 +32,32 @@ class SettingsNotifier extends StateNotifier<SettingsState> {
     if (state.overrideSystemVolume == true) {
       overrideVolume(state.volumeOverrideValue);
     }
-    // if (state.timerStartsDnD == true) {
-    //   enableDnD();
-    // }
+    if (state.timerStartsDnD == true) {
+      enableDnD();
+    }
   }
 
-   void setVolumeOverrideValue (double value) {
+  void setVolumeOverrideValue(double value) {
     state = state.copyWith(volumeOverrideValue: value);
   }
 
-  Future<void> overrideVolume (double value) async {
-    await FlutterVolumeController.updateShowSystemUI(true); //TODO: set as false once testing is done for uix purposes
-    await FlutterVolumeController.setVolume(state.volumeOverrideValue, stream: AudioStream.music);
+  Future<void> overrideVolume(double value) async {
+    await FlutterVolumeController.updateShowSystemUI(
+      true,
+    ); //TODO: set as false once testing is done for uix purposes
+    await FlutterVolumeController.setVolume(
+      state.volumeOverrideValue,
+      stream: AudioStream.music,
+    );
   }
 
-  Future<void> silenceRinger (double value) async {
-    await FlutterVolumeController.updateShowSystemUI(true); //TODO: set as false once testing is done for uix purposes
+  Future<void> silenceRinger(double value) async {
+    await FlutterVolumeController.updateShowSystemUI(
+      true,
+    ); //TODO: set as false once testing is done for uix purposes
     await FlutterVolumeController.setVolume(0, stream: AudioStream.ring);
   }
-  
+
   // Future<void> enableDnD () async {
   //   bool accessGranted = (await FlutterDnd.isNotificationPolicyAccessGranted) ?? false;
   //   if (accessGranted) {
@@ -55,5 +67,15 @@ class SettingsNotifier extends StateNotifier<SettingsState> {
   //   }
   // }
 
-
+  final dndPlugin = DoNotDisturbPlugin();
+  Future<void> enableDnD() async {
+    bool isDnDEnabled = await dndPlugin.isNotificationPolicyAccessGranted();
+    print("isDnDEnabled: $isDnDEnabled");
+    if (isDnDEnabled) {
+      print("enable dnd");
+      await dndPlugin.setInterruptionFilter(InterruptionFilter.none);
+    } else {
+      await dndPlugin.openNotificationPolicyAccessSettings();
+    }
+  }
 }
