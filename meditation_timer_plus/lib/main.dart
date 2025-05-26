@@ -124,14 +124,6 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
     pickNextDuration();
   }
 
-  void _handleTimerSettingsOnStart (settingsState, settingsNotifier) {
-    if (settingsState.overrideSystemSound == true) {
-      settingsNotifier.overrideVolume(
-        settingsState.volumeOverrideValue,
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called
@@ -218,7 +210,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
               iconSize: 72,
               onPressed: () {
                 timerNotifier.toggleTimers();
-                _handleTimerSettingsOnStart(settingsState, settingsNotifier);
+                settingsNotifier.handleTimerSettingsOnStart();
               },
               icon: Icon(timerState.currentIcon),
             ),
@@ -255,11 +247,11 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
           title: Text("Turn on DnD with timer?"),
         ),
         CheckboxListTile(
-          value: state.overrideSystemSound,
+          value: state.overrideSystemVolume,
           onChanged: (bool? value) {
             notifier.toggleTimerSettings(
-              TimerSetting.overrideSystemSound,
-              !state.overrideSystemSound,
+              TimerSetting.overrideSystemVolume,
+              !state.overrideSystemVolume,
             );
           },
           title: Text("Override system volume?"),

@@ -19,7 +19,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$SettingsState {
   bool get timerStartsDnD => throw _privateConstructorUsedError;
   double get soundVolume => throw _privateConstructorUsedError;
-  bool get overrideSystemSound => throw _privateConstructorUsedError;
+  bool get overrideSystemVolume => throw _privateConstructorUsedError;
   bool get playSoundOnEachTimer => throw _privateConstructorUsedError;
   bool get silenceRinger => throw _privateConstructorUsedError;
   double get volumeOverrideValue => throw _privateConstructorUsedError;
@@ -41,7 +41,7 @@ abstract class $SettingsStateCopyWith<$Res> {
   $Res call({
     bool timerStartsDnD,
     double soundVolume,
-    bool overrideSystemSound,
+    bool overrideSystemVolume,
     bool playSoundOnEachTimer,
     bool silenceRinger,
     double volumeOverrideValue,
@@ -65,7 +65,7 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
   $Res call({
     Object? timerStartsDnD = null,
     Object? soundVolume = null,
-    Object? overrideSystemSound = null,
+    Object? overrideSystemVolume = null,
     Object? playSoundOnEachTimer = null,
     Object? silenceRinger = null,
     Object? volumeOverrideValue = null,
@@ -80,9 +80,9 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
                 ? _value.soundVolume
                 : soundVolume // ignore: cast_nullable_to_non_nullable
                       as double,
-            overrideSystemSound: null == overrideSystemSound
-                ? _value.overrideSystemSound
-                : overrideSystemSound // ignore: cast_nullable_to_non_nullable
+            overrideSystemVolume: null == overrideSystemVolume
+                ? _value.overrideSystemVolume
+                : overrideSystemVolume // ignore: cast_nullable_to_non_nullable
                       as bool,
             playSoundOnEachTimer: null == playSoundOnEachTimer
                 ? _value.playSoundOnEachTimer
@@ -114,7 +114,7 @@ abstract class _$$SettingsStateImplCopyWith<$Res>
   $Res call({
     bool timerStartsDnD,
     double soundVolume,
-    bool overrideSystemSound,
+    bool overrideSystemVolume,
     bool playSoundOnEachTimer,
     bool silenceRinger,
     double volumeOverrideValue,
@@ -137,7 +137,7 @@ class __$$SettingsStateImplCopyWithImpl<$Res>
   $Res call({
     Object? timerStartsDnD = null,
     Object? soundVolume = null,
-    Object? overrideSystemSound = null,
+    Object? overrideSystemVolume = null,
     Object? playSoundOnEachTimer = null,
     Object? silenceRinger = null,
     Object? volumeOverrideValue = null,
@@ -152,9 +152,9 @@ class __$$SettingsStateImplCopyWithImpl<$Res>
             ? _value.soundVolume
             : soundVolume // ignore: cast_nullable_to_non_nullable
                   as double,
-        overrideSystemSound: null == overrideSystemSound
-            ? _value.overrideSystemSound
-            : overrideSystemSound // ignore: cast_nullable_to_non_nullable
+        overrideSystemVolume: null == overrideSystemVolume
+            ? _value.overrideSystemVolume
+            : overrideSystemVolume // ignore: cast_nullable_to_non_nullable
                   as bool,
         playSoundOnEachTimer: null == playSoundOnEachTimer
             ? _value.playSoundOnEachTimer
@@ -179,7 +179,7 @@ class _$SettingsStateImpl implements _SettingsState {
   const _$SettingsStateImpl({
     required this.timerStartsDnD,
     required this.soundVolume,
-    required this.overrideSystemSound,
+    required this.overrideSystemVolume,
     required this.playSoundOnEachTimer,
     required this.silenceRinger,
     required this.volumeOverrideValue,
@@ -190,7 +190,7 @@ class _$SettingsStateImpl implements _SettingsState {
   @override
   final double soundVolume;
   @override
-  final bool overrideSystemSound;
+  final bool overrideSystemVolume;
   @override
   final bool playSoundOnEachTimer;
   @override
@@ -200,7 +200,7 @@ class _$SettingsStateImpl implements _SettingsState {
 
   @override
   String toString() {
-    return 'SettingsState(timerStartsDnD: $timerStartsDnD, soundVolume: $soundVolume, overrideSystemSound: $overrideSystemSound, playSoundOnEachTimer: $playSoundOnEachTimer, silenceRinger: $silenceRinger, volumeOverrideValue: $volumeOverrideValue)';
+    return 'SettingsState(timerStartsDnD: $timerStartsDnD, soundVolume: $soundVolume, overrideSystemVolume: $overrideSystemVolume, playSoundOnEachTimer: $playSoundOnEachTimer, silenceRinger: $silenceRinger, volumeOverrideValue: $volumeOverrideValue)';
   }
 
   @override
@@ -212,8 +212,8 @@ class _$SettingsStateImpl implements _SettingsState {
                 other.timerStartsDnD == timerStartsDnD) &&
             (identical(other.soundVolume, soundVolume) ||
                 other.soundVolume == soundVolume) &&
-            (identical(other.overrideSystemSound, overrideSystemSound) ||
-                other.overrideSystemSound == overrideSystemSound) &&
+            (identical(other.overrideSystemVolume, overrideSystemVolume) ||
+                other.overrideSystemVolume == overrideSystemVolume) &&
             (identical(other.playSoundOnEachTimer, playSoundOnEachTimer) ||
                 other.playSoundOnEachTimer == playSoundOnEachTimer) &&
             (identical(other.silenceRinger, silenceRinger) ||
@@ -227,7 +227,7 @@ class _$SettingsStateImpl implements _SettingsState {
     runtimeType,
     timerStartsDnD,
     soundVolume,
-    overrideSystemSound,
+    overrideSystemVolume,
     playSoundOnEachTimer,
     silenceRinger,
     volumeOverrideValue,
@@ -246,7 +246,7 @@ abstract class _SettingsState implements SettingsState {
   const factory _SettingsState({
     required final bool timerStartsDnD,
     required final double soundVolume,
-    required final bool overrideSystemSound,
+    required final bool overrideSystemVolume,
     required final bool playSoundOnEachTimer,
     required final bool silenceRinger,
     required final double volumeOverrideValue,
@@ -257,7 +257,7 @@ abstract class _SettingsState implements SettingsState {
   @override
   double get soundVolume;
   @override
-  bool get overrideSystemSound;
+  bool get overrideSystemVolume;
   @override
   bool get playSoundOnEachTimer;
   @override
