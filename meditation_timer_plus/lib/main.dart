@@ -124,6 +124,31 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
     pickNextDuration();
   }
 
+  String _displayTimeRemainingFormatted(
+    List<Duration> queue,
+    Duration timeRemaining,
+  ) {
+    final parts = <String>[];
+
+    final hours = timeRemaining.inHours;
+    final minutes = timeRemaining.inMinutes % 60;
+    final seconds = timeRemaining.inSeconds % 60;
+
+    if ( hours > 0) {
+      parts.add("${hours}h");
+    }
+
+    if (minutes > 0) {
+      parts.add("${minutes}m");
+    }
+
+    if (seconds > 0) {
+      parts.add("${seconds}s");
+    }
+
+    return parts.join(", ");
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called
@@ -187,12 +212,13 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
     final minutes = timerState.countdownRemaining.inMinutes;
     final seconds = timerState.countdownRemaining.inSeconds % 60;
 
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         // TODO: add total time visible here, format it to look prettier
         Text(
-          "Time Remaining: $minutes minute${minutes != 1 ? 's' : ''}, $seconds second${seconds != 1 ? 's' : ''}",
+          _displayTimeRemainingFormatted(timerState.countdownQueue, timerState.countdownRemaining),
           style: Theme.of(context).textTheme.headlineMedium,
           textAlign: TextAlign.center,
         ),
