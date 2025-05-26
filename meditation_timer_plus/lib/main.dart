@@ -227,7 +227,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
           value: state.timerStartsDnD,
           onChanged: (bool? value) {
             notifier.toggleTimerSettings(
-              timerSetting.timerStartsDnD,
+              TimerSetting.timerStartsDnD,
               !state.timerStartsDnD,
             );
           },
@@ -237,17 +237,34 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
           value: state.overrideSystemSound,
           onChanged: (bool? value) {
             notifier.toggleTimerSettings(
-              timerSetting.overrideSystemSound,
+              TimerSetting.overrideSystemSound,
               !state.overrideSystemSound,
             );
           },
-          title: Text("Override system sound with timer?"),
+          title: Text("Override system volume?"),
+        ),
+        Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 12, bottom: 4),
+              child: Text("Volume Override Value:"),
+            ),
+            Slider(
+              value: state.volumeOverrideValue,
+              onChanged: (double value) => notifier.setVolumeOverrideValue(value),
+              min: 0,
+              max: 100,
+              divisions: 100,
+              label: "${state.volumeOverrideValue.toInt()}",
+            
+            ),
+          ],
         ),
         CheckboxListTile(
           value: state.playSoundOnEachTimer,
           onChanged: (bool? value) {
             notifier.toggleTimerSettings(
-              timerSetting.playSoundOnEachTimer,
+              TimerSetting.playSoundOnEachTimer,
               !state.playSoundOnEachTimer,
             );
           },
@@ -257,7 +274,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
           value: state.silenceRinger,
           onChanged: (bool? value) {
             notifier.toggleTimerSettings(
-              timerSetting.silenceRinger,
+              TimerSetting.silenceRinger,
               !state.silenceRinger,
             );
           },

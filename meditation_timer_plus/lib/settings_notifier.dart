@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'settings_state.dart';
 
-enum timerSetting {
+enum TimerSetting {
   timerStartsDnD,
   overrideSystemSound,
   playSoundOnEachTimer,
@@ -13,13 +13,17 @@ enum timerSetting {
 class SettingsNotifier extends StateNotifier<SettingsState> {
   SettingsNotifier() : super(SettingsState.initial());
 
-  void toggleTimerSettings (timerSetting setting, bool isChecked) {
+  void toggleTimerSettings (TimerSetting setting, bool isChecked) {
     state = switch (setting) {
-      timerSetting.timerStartsDnD => state.copyWith(timerStartsDnD: isChecked),
-      timerSetting.overrideSystemSound => state.copyWith(overrideSystemSound: isChecked),
-      timerSetting.playSoundOnEachTimer => state.copyWith(playSoundOnEachTimer: isChecked),
-      timerSetting.silenceRinger => state.copyWith(silenceRinger: isChecked),
+      TimerSetting.timerStartsDnD => state.copyWith(timerStartsDnD: isChecked),
+      TimerSetting.overrideSystemSound => state.copyWith(overrideSystemSound: isChecked),
+      TimerSetting.playSoundOnEachTimer => state.copyWith(playSoundOnEachTimer: isChecked),
+      TimerSetting.silenceRinger => state.copyWith(silenceRinger: isChecked),
     };
     print(state);
+  }
+
+  void setVolumeOverrideValue (double value) {
+    state = state.copyWith(volumeOverrideValue: value);
   }
 }

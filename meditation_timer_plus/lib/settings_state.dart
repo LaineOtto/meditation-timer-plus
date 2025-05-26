@@ -10,6 +10,7 @@ class SettingsState with _$SettingsState {
     required bool overrideSystemSound,
     required bool playSoundOnEachTimer,
     required bool silenceRinger,
+    required double volumeOverrideValue,
   }) = _SettingsState;
 
   factory SettingsState.initial() => const SettingsState(
@@ -18,5 +19,6 @@ class SettingsState with _$SettingsState {
     overrideSystemSound: true,
     playSoundOnEachTimer: true,
     silenceRinger: true,
+    volumeOverrideValue: 0
   );
 }

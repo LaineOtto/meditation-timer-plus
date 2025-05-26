@@ -22,6 +22,7 @@ mixin _$SettingsState {
   bool get overrideSystemSound => throw _privateConstructorUsedError;
   bool get playSoundOnEachTimer => throw _privateConstructorUsedError;
   bool get silenceRinger => throw _privateConstructorUsedError;
+  double get volumeOverrideValue => throw _privateConstructorUsedError;
 
   /// Create a copy of SettingsState
   /// with the given fields replaced by the non-null parameter values.
@@ -43,6 +44,7 @@ abstract class $SettingsStateCopyWith<$Res> {
     bool overrideSystemSound,
     bool playSoundOnEachTimer,
     bool silenceRinger,
+    double volumeOverrideValue,
   });
 }
 
@@ -66,6 +68,7 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
     Object? overrideSystemSound = null,
     Object? playSoundOnEachTimer = null,
     Object? silenceRinger = null,
+    Object? volumeOverrideValue = null,
   }) {
     return _then(
       _value.copyWith(
@@ -89,6 +92,10 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
                 ? _value.silenceRinger
                 : silenceRinger // ignore: cast_nullable_to_non_nullable
                       as bool,
+            volumeOverrideValue: null == volumeOverrideValue
+                ? _value.volumeOverrideValue
+                : volumeOverrideValue // ignore: cast_nullable_to_non_nullable
+                      as double,
           )
           as $Val,
     );
@@ -110,6 +117,7 @@ abstract class _$$SettingsStateImplCopyWith<$Res>
     bool overrideSystemSound,
     bool playSoundOnEachTimer,
     bool silenceRinger,
+    double volumeOverrideValue,
   });
 }
 
@@ -132,6 +140,7 @@ class __$$SettingsStateImplCopyWithImpl<$Res>
     Object? overrideSystemSound = null,
     Object? playSoundOnEachTimer = null,
     Object? silenceRinger = null,
+    Object? volumeOverrideValue = null,
   }) {
     return _then(
       _$SettingsStateImpl(
@@ -155,6 +164,10 @@ class __$$SettingsStateImplCopyWithImpl<$Res>
             ? _value.silenceRinger
             : silenceRinger // ignore: cast_nullable_to_non_nullable
                   as bool,
+        volumeOverrideValue: null == volumeOverrideValue
+            ? _value.volumeOverrideValue
+            : volumeOverrideValue // ignore: cast_nullable_to_non_nullable
+                  as double,
       ),
     );
   }
@@ -169,6 +182,7 @@ class _$SettingsStateImpl implements _SettingsState {
     required this.overrideSystemSound,
     required this.playSoundOnEachTimer,
     required this.silenceRinger,
+    required this.volumeOverrideValue,
   });
 
   @override
@@ -181,10 +195,12 @@ class _$SettingsStateImpl implements _SettingsState {
   final bool playSoundOnEachTimer;
   @override
   final bool silenceRinger;
+  @override
+  final double volumeOverrideValue;
 
   @override
   String toString() {
-    return 'SettingsState(timerStartsDnD: $timerStartsDnD, soundVolume: $soundVolume, overrideSystemSound: $overrideSystemSound, playSoundOnEachTimer: $playSoundOnEachTimer, silenceRinger: $silenceRinger)';
+    return 'SettingsState(timerStartsDnD: $timerStartsDnD, soundVolume: $soundVolume, overrideSystemSound: $overrideSystemSound, playSoundOnEachTimer: $playSoundOnEachTimer, silenceRinger: $silenceRinger, volumeOverrideValue: $volumeOverrideValue)';
   }
 
   @override
@@ -201,7 +217,9 @@ class _$SettingsStateImpl implements _SettingsState {
             (identical(other.playSoundOnEachTimer, playSoundOnEachTimer) ||
                 other.playSoundOnEachTimer == playSoundOnEachTimer) &&
             (identical(other.silenceRinger, silenceRinger) ||
-                other.silenceRinger == silenceRinger));
+                other.silenceRinger == silenceRinger) &&
+            (identical(other.volumeOverrideValue, volumeOverrideValue) ||
+                other.volumeOverrideValue == volumeOverrideValue));
   }
 
   @override
@@ -212,6 +230,7 @@ class _$SettingsStateImpl implements _SettingsState {
     overrideSystemSound,
     playSoundOnEachTimer,
     silenceRinger,
+    volumeOverrideValue,
   );
 
   /// Create a copy of SettingsState
@@ -230,6 +249,7 @@ abstract class _SettingsState implements SettingsState {
     required final bool overrideSystemSound,
     required final bool playSoundOnEachTimer,
     required final bool silenceRinger,
+    required final double volumeOverrideValue,
   }) = _$SettingsStateImpl;
 
   @override
@@ -242,6 +262,8 @@ abstract class _SettingsState implements SettingsState {
   bool get playSoundOnEachTimer;
   @override
   bool get silenceRinger;
+  @override
+  double get volumeOverrideValue;
 
   /// Create a copy of SettingsState
   /// with the given fields replaced by the non-null parameter values.
