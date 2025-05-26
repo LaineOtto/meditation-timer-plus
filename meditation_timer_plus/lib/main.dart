@@ -124,17 +124,14 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
     pickNextDuration();
   }
 
-  String _displayTimeRemainingFormatted(
-    List<Duration> queue,
-    Duration timeRemaining,
-  ) {
+  String _displayTimeFormatted(List<Duration> queue, Duration timeRemaining) {
     final parts = <String>[];
 
     final hours = timeRemaining.inHours;
     final minutes = timeRemaining.inMinutes % 60;
     final seconds = timeRemaining.inSeconds % 60;
 
-    if ( hours > 0) {
+    if (hours > 0) {
       parts.add("${hours}h");
     }
 
@@ -212,21 +209,59 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
     final minutes = timerState.countdownRemaining.inMinutes;
     final seconds = timerState.countdownRemaining.inSeconds % 60;
 
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         // TODO: add total time visible here, format it to look prettier
-        Text(
-          _displayTimeRemainingFormatted(timerState.countdownQueue, timerState.countdownRemaining),
-          style: Theme.of(context).textTheme.headlineMedium,
-          textAlign: TextAlign.center,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.timer, size: 40),
+            SizedBox(width: 10),
+            SizedBox(
+              width: 150,
+              child: Text(
+                _displayTimeFormatted(
+                      timerState.countdownQueue,
+                      timerState.countdownRemaining,
+                    ).isNotEmpty
+                    ? _displayTimeFormatted(
+                        timerState.countdownQueue,
+                        timerState.countdownRemaining,
+                      )
+                    : "Countdown Finished",
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  fontFeatures: [FontFeature.tabularFigures()],
+                  fontFamily: 'monospace',
+                ),
+                textAlign: TextAlign.left,
+              ),
+            ),
+          ],
         ),
         SizedBox(height: 20),
-        Text(
-          "Stopwatch: ${timerState.stopwatchElapsed.inSeconds}",
-          style: Theme.of(context).textTheme.headlineMedium,
-          textAlign: TextAlign.center,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.timer, size: 40),
+            SizedBox(width: 10),
+            SizedBox(
+              width: 150,
+              child: Text(
+                _displayTimeFormatted(
+                      [],
+                      timerState.stopwatchElapsed,
+                    ).isNotEmpty
+                    ? _displayTimeFormatted([], timerState.stopwatchElapsed)
+                    : "0s",
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  fontFeatures: [FontFeature.tabularFigures()],
+                  fontFamily: 'monospace',
+                ),
+                textAlign: TextAlign.left,
+              ),
+            ),
+          ],
         ),
         SizedBox(height: 20),
         Row(
