@@ -124,6 +124,14 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
     pickNextDuration();
   }
 
+  void _handleTimerSettingsOnStart (settingsState, settingsNotifier) {
+    if (settingsState.overrideSystemSound == true) {
+      settingsNotifier.overrideVolume(
+        settingsState.volumeOverrideValue,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called
@@ -210,9 +218,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
               iconSize: 72,
               onPressed: () {
                 timerNotifier.toggleTimers();
-                if (settingsState.overrideSystemSound == true) {
-                  settingsNotifier.overrideVolume(settingsState.volumeOverrideValue);
-                }
+                _handleTimerSettingsOnStart(settingsState, settingsNotifier);
               },
               icon: Icon(timerState.currentIcon),
             ),
