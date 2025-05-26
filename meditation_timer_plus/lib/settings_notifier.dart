@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_volume_controller/flutter_volume_controller.dart';
 
 import 'settings_state.dart';
 
@@ -23,7 +23,14 @@ class SettingsNotifier extends StateNotifier<SettingsState> {
     print(state);
   }
 
-  void setVolumeOverrideValue (double value) {
+   void setVolumeOverrideValue (double value) {
     state = state.copyWith(volumeOverrideValue: value);
   }
+
+  Future<void> overrideVolume (double value) async {
+    await FlutterVolumeController.updateShowSystemUI(true); //TODO: set as false once testing is done for uix purposes
+    await FlutterVolumeController.setVolume(state.volumeOverrideValue, stream: AudioStream.music);
+  }
+
+
 }

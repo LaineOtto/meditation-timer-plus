@@ -134,7 +134,12 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
     final settingsNotifier = ref.read(settingsNotifierProvider.notifier);
 
     List<Widget> pages = [
-      _buildTimerPage(timerState, timerNotifier),
+      _buildTimerPage(
+        timerState,
+        timerNotifier,
+        settingsState,
+        settingsNotifier,
+      ),
       _buildSettingsPage(settingsState, settingsNotifier),
     ];
 
@@ -173,9 +178,14 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
   }
 
   // Main Page
-  Widget _buildTimerPage(state, notifier) {
-    final minutes = state.countdownRemaining.inMinutes;
-    final seconds = state.countdownRemaining.inSeconds % 60;
+  Widget _buildTimerPage(
+    timerState,
+    timerNotifier,
+    settingsState,
+    settingsNotifier,
+  ) {
+    final minutes = timerState.countdownRemaining.inMinutes;
+    final seconds = timerState.countdownRemaining.inSeconds % 60;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -188,7 +198,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
         ),
         SizedBox(height: 20),
         Text(
-          "Stopwatch: ${state.stopwatchElapsed.inSeconds}",
+          "Stopwatch: ${timerState.stopwatchElapsed.inSeconds}",
           style: Theme.of(context).textTheme.headlineMedium,
           textAlign: TextAlign.center,
         ),
@@ -198,13 +208,18 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
           children: [
             IconButton(
               iconSize: 72,
-              onPressed: notifier.toggleTimers,
-              icon: Icon(state.currentIcon),
+              onPressed: () {
+                timerNotifier.toggleTimers();
+                if (settingsState.overrideSystemSound == true) {
+                  settingsNotifier.overrideVolume(settingsState.volumeOverrideValue);
+                }
+              },
+              icon: Icon(timerState.currentIcon),
             ),
             SizedBox(width: 15),
             IconButton(
               iconSize: 72,
-              onPressed: notifier.resetTimers,
+              onPressed: timerNotifier.resetTimers,
               icon: Icon(Icons.stop_circle),
             ),
           ],
@@ -251,12 +266,12 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
             ),
             Slider(
               value: state.volumeOverrideValue,
-              onChanged: (double value) => notifier.setVolumeOverrideValue(value),
+              onChanged: (double value) =>
+                  notifier.setVolumeOverrideValue(value),
               min: 0,
               max: 1,
               divisions: 100,
               label: "${((state.volumeOverrideValue * 100).toInt())}",
-            
             ),
           ],
         ),
