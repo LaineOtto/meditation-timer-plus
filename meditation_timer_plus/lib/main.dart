@@ -6,9 +6,9 @@ import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 
 import 'timer_notifier.dart';
 import 'timer_state.dart';
-import 'settings_notifier.dart';
-import 'settings_state.dart';
-import 'platform_settings_service.dart';
+import 'settings/settings_notifier.dart';
+import 'settings/settings_state.dart';
+import 'settings/platform_settings_service.dart';
 
 final timerNotifierProvider = StateNotifierProvider<TimerNotifier, TimerState>((
   ref,
