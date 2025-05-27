@@ -21,7 +21,7 @@ class TimerState with _$TimerState {
   factory TimerState.initial() => const TimerState(
     isRunning: false,
     stopwatchElapsed: Duration.zero,
-    countdownRemaining: Duration(seconds: 30),
+    countdownRemaining: Duration(seconds: 10),
     countdownInitial: Duration(seconds: 0),
     countdownQueue: [],
     currentMode: TimerMode.single,

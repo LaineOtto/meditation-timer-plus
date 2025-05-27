@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 import 'timer_state.dart';
 
@@ -121,6 +122,8 @@ class TimerNotifier extends StateNotifier<TimerState> {
         isRunning: false,
       );
       timer.cancel();
+      print("timer end");
+      onTimerFinish();
     }
   }
 
@@ -166,5 +169,18 @@ class TimerNotifier extends StateNotifier<TimerState> {
         countdownRemaining: times[0],
       );
     }
+  }
+
+  Future<void> onTimerFinish() async {
+    print("timer finish");
+    _countdownTimer?.cancel();
+    state = state.copyWith(
+      countdownRemaining: Duration(seconds: 0),
+      countdownQueue: [],
+    );
+
+    final timerSoundPlayer = AudioPlayer();
+    await timerSoundPlayer.play(AssetSource("gong.wav"));
+    print(timerSoundPlayer.play(AssetSource("gong.wav")).toString());
   }
 }
