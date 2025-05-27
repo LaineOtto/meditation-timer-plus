@@ -87,10 +87,23 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
     });
   }
 
-  void _showTimePickerDialog(context) {
+  void _showTimePickerDialog(context, queueString) {
     final timerNotifier = ref.read(timerNotifierProvider.notifier);
     final currentDuration = ref.read(timerNotifierProvider).countdownRemaining;
     final List<Duration> queue = [];
+
+    String _formatQueueForDisplay(queueString) {
+      String formattedString = "";
+      if (queueString == "[]") {
+        formattedString = "${formattedString}Empty";
+      } else {
+        formattedString = "${formattedString}$queueString";
+      }
+
+      return formattedString;
+    }
+
+    print("state: $queueString");
 
     void pickNextDuration() {
       Duration selected = const Duration(minutes: 1);
@@ -98,10 +111,17 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
       showCupertinoModalPopup(
         context: context,
         builder: (_) => Container(
-          height: 300,
           color: CupertinoColors.systemBackground.resolveFrom(context),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisSize: MainAxisSize.min,
             children: [
+              Flexible(
+                child: Text(
+                  _formatQueueForDisplay(queueString),
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
               SizedBox(
                 height: 200,
                 child: CupertinoTimerPicker(
@@ -144,7 +164,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
     pickNextDuration();
   }
 
-  String _displayTimeFormatted(List<Duration> queue, Duration timeRemaining) {
+  String _displayTimeFormatted(Duration timeRemaining) {
     final parts = <String>[];
 
     final hours = timeRemaining.inHours;
@@ -194,7 +214,12 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                 MenuAnchor(
                   menuChildren: [
                     MenuItemButton(
-                      onPressed: () => _showTimePickerDialog(context),
+                      onPressed: () => {
+                        _showTimePickerDialog(
+                          context,
+                          timerState.countdownQueue.toString(),
+                        ),
+                      },
                       child: Text("Set Timer Duration"),
                     ),
                   ],
@@ -257,11 +282,9 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         _displayTimeFormatted(
-                              timerState.countdownQueue,
                               timerState.countdownRemaining,
                             ).isNotEmpty
                             ? _displayTimeFormatted(
-                                timerState.countdownQueue,
                                 timerState.countdownRemaining,
                               )
                             : "Countdown Finished",
@@ -289,10 +312,9 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                   width: 250,
                   child: Text(
                     _displayTimeFormatted(
-                          [],
                           timerState.stopwatchElapsed,
                         ).isNotEmpty
-                        ? _displayTimeFormatted([], timerState.stopwatchElapsed)
+                        ? _displayTimeFormatted(timerState.stopwatchElapsed)
                         : "0s",
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontFeatures: [FontFeature.tabularFigures()],
