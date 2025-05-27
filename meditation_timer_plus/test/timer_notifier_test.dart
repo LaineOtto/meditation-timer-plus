@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fake_async/fake_async.dart';
-import 'package:meditation_timer_plus/timer_notifier.dart';
-import 'package:meditation_timer_plus/timer_state.dart';
+import 'package:meditation_timer_plus/timer/timer_notifier.dart';
+import 'package:meditation_timer_plus/timer/timer_state.dart';
 
 void main() {
   late TimerNotifier timerNotifier;
@@ -61,7 +61,10 @@ void main() {
 
       // Timers should not update state anymore
       async.elapse(Duration(seconds: 5));
-      expect(timerNotifier.state.countdownRemaining.inSeconds, lessThanOrEqualTo(5));
+      expect(
+        timerNotifier.state.countdownRemaining.inSeconds,
+        lessThanOrEqualTo(5),
+      );
     });
   });
 
@@ -101,10 +104,18 @@ void main() {
   });
 
   test('setTime sets queue and countdownRemaining correctly', () {
-    final queue = [Duration(seconds: 10), Duration(seconds: 20), Duration(seconds: 30)];
+    final queue = [
+      Duration(seconds: 10),
+      Duration(seconds: 20),
+      Duration(seconds: 30),
+    ];
     timerNotifier.setTime(queue);
 
     expect(timerNotifier.state.countdownRemaining, Duration(seconds: 10));
-    expect(timerNotifier.state.countdownQueue, [Duration(seconds: 10), Duration(seconds: 20), Duration(seconds: 30)]);
+    expect(timerNotifier.state.countdownQueue, [
+      Duration(seconds: 10),
+      Duration(seconds: 20),
+      Duration(seconds: 30),
+    ]);
   });
 }

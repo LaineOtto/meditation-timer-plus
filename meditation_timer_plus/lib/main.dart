@@ -4,12 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 
-import 'timer_notifier.dart';
-import 'timer_state.dart';
+import 'timer/timer_notifier.dart';
+import 'timer/timer_state.dart';
 import 'settings/settings_notifier.dart';
 import 'settings/settings_state.dart';
 import 'settings/platform_settings_service.dart';
-import 'timer_utils.dart';
+import 'timer/timer_utils.dart';
 
 final timerNotifierProvider = StateNotifierProvider<TimerNotifier, TimerState>((
   ref,
