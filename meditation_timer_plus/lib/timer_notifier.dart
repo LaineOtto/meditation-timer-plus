@@ -12,7 +12,6 @@ Future<void> alarmCallback() async {
 
   final timerSoundPlayer = AudioPlayer();
   await timerSoundPlayer.play(AssetSource("gong.wav"));
-  print(timerSoundPlayer.play(AssetSource("gong.wav")).toString());
 }
 
 class TimerNotifier extends StateNotifier<TimerState> {
@@ -47,37 +46,40 @@ class TimerNotifier extends StateNotifier<TimerState> {
     );
   }
 
-  void _initializeCountdown() {
-    Duration countdownRemaining = state.countdownRemaining;
-    if (state.countdownQueue.isNotEmpty && _isFirstRun) {
-      countdownRemaining = state.countdownQueue.first;
-      _isFirstRun = false;
-      state = state.copyWith(
-        currentMode: TimerMode.queue,
-        countdownRemaining: countdownRemaining,
-        countdownQueue: List.from(state.countdownQueue)..removeAt(0),
-      );
+  void _advanceQueue() {
+    Duration countdownRemaining = state.countdownQueue.first;
+    state = state.copyWith(
+      currentMode: TimerMode.queue,
+      countdownRemaining: countdownRemaining,
+      countdownQueue: List.from(state.countdownQueue)..removeAt(0),
+    );
+  }
 
-      final immediateRemaining =
-          state.countdownRemaining - Duration(seconds: 1);
-      if (immediateRemaining > Duration.zero) {
-        state = state.copyWith(countdownRemaining: immediateRemaining);
-      }
-    } else if (_isFirstRun) {
-      countdownRemaining = Duration(seconds: 30);
-      _isFirstRun = false;
-      state = state.copyWith(
-        currentMode: TimerMode.single,
-        countdownRemaining: countdownRemaining,
-      );
+  void _setCountdownWithoutQueue(Duration countdownRemaining) {
+    state = state.copyWith(
+      currentMode: TimerMode.single,
+      countdownRemaining: countdownRemaining,
+      countdownQueue: [],
+    );
+  }
+
+  void _useDefaultCountdown() {
+    Duration countdownRemaining = Duration(seconds: 30);
+    state = state.copyWith(
+      currentMode: TimerMode.single,
+      countdownRemaining: countdownRemaining,
+    );
+  }
+
+  void _prepareInitialCountdown() {
+    Duration countdownRemaining = state.countdownRemaining;
+    _isFirstRun = false;
+    if (state.countdownQueue.isNotEmpty) {
+      _advanceQueue();
+    } else if (countdownRemaining > Duration.zero) {
+      _setCountdownWithoutQueue(countdownRemaining);
     } else {
-      if (countdownRemaining <= Duration.zero) {
-        countdownRemaining = Duration(seconds: 30);
-      }
-      state = state.copyWith(
-        currentMode: TimerMode.single,
-        countdownRemaining: countdownRemaining,
-      );
+      _useDefaultCountdown();
     }
   }
 
@@ -109,7 +111,7 @@ class TimerNotifier extends StateNotifier<TimerState> {
     updateInitialDuration(state.countdownRemaining);
 
     _initializeStopwatch();
-    _initializeCountdown();
+    _prepareInitialCountdown();
     _startCountdownTimer();
 
     scheduleAlarm(state.countdownRemaining);
@@ -134,7 +136,6 @@ class TimerNotifier extends StateNotifier<TimerState> {
         isRunning: false,
       );
       timer.cancel();
-      print("timer end");
       onTimerFinish();
     }
   }

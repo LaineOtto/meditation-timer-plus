@@ -18,11 +18,11 @@ final timerNotifierProvider = StateNotifierProvider<TimerNotifier, TimerState>((
 
 final settingsNotifierProvider =
     StateNotifierProvider<SettingsNotifier, SettingsState>((ref) {
-      final PlatformService = ref.read(PlatformServiceProvider);
-      return SettingsNotifier(PlatformService);
+      final platformService = ref.read(platformServiceProvider);
+      return SettingsNotifier(platformService);
     });
 
-final PlatformServiceProvider = Provider<PlatformSettingsService>((ref) {
+final platformServiceProvider = Provider<PlatformSettingsService>((ref) {
   return PlatformSettingsService();
 });
 
