@@ -125,52 +125,58 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
 
       showCupertinoModalPopup(
         context: context,
-        builder: (_) => Container(
-          color: CupertinoColors.systemBackground.resolveFrom(context),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Flexible(
-                child: Text(
-                  _formatQueueForDisplay(),
-                  style: TextStyle(fontSize: 20),
-                ),
-              ),
-              SizedBox(
-                height: 200,
-                child: CupertinoTimerPicker(
-                  mode: CupertinoTimerPickerMode.hm,
-                  initialTimerDuration: currentDuration,
-                  onTimerDurationChanged: (d) => selected = d,
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  CupertinoButton(
-                    child: const Text('Add another'),
-                    onPressed: () {
-                      queue.add(selected);
-                      Navigator.of(context).pop();
-                      pickNextDuration();
-                    },
+        builder: (_) => Material(
+          child: Container(
+            color: CupertinoColors.systemBackground.resolveFrom(context),
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    _formatQueueForDisplay(),
+                    style: TextStyle(fontSize: 25, color: Colors.black),
+                    softWrap: true,
+                    textAlign: TextAlign.left,
                   ),
-                  CupertinoButton(
-                    child: Text("Done"),
-                    onPressed: () {
-                      queue.add(selected);
-                      Navigator.of(context).pop();
-                      if (queue.length == 1) {
-                        timerNotifier.updateInitialDuration(selected);
-                      } else {
-                        timerNotifier.setTime(queue);
-                      }
-                    },
+                ),
+                SizedBox(
+                  // height: 200,
+                  child: CupertinoTimerPicker(
+                    mode: CupertinoTimerPickerMode.hm,
+                    initialTimerDuration: currentDuration,
+                    onTimerDurationChanged: (d) => selected = d,
                   ),
-                ],
-              ),
-            ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    CupertinoButton(
+                      child: const Text('Add another'),
+                      onPressed: () {
+                        queue.add(selected);
+                        Navigator.of(context).pop();
+                        pickNextDuration();
+                      },
+                    ),
+                    CupertinoButton(
+                      child: Text("Done"),
+                      onPressed: () {
+                        queue.add(selected);
+                        Navigator.of(context).pop();
+                        if (queue.length == 1) {
+                          timerNotifier.updateInitialDuration(selected);
+                        } else {
+                          timerNotifier.setTime(queue);
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       );
