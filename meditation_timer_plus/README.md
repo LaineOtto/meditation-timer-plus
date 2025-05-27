@@ -10,14 +10,15 @@
 - [x] Program an order into countdown
   - e.g. 5min -> 5min -> 5min -> 30 min, etc
 - [x] Enable user control of queue
-- [ ] Play bell/gong at each countdown timer finish
-- [ ] Change volume on gong, override device volume setting
+- [x] Play bell/gong at each countdown timer finish
+- [x] Change volume on gong, override device volume setting
 
 ### Don't distract, be reliable
 
 - [x] Option to turn on Do Not Disturb
 - [x] Option to silence ringer
-- [ ] Make run with screen off
+- [x] Make run with screen off
+- [ ] Make ui update after trigger while screen is off
 
 ## Possible future features, in no particular order
 
