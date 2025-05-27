@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'timer_state.dart';
 
-
 @pragma('vm:entry-point')
 void alarmCallback() {
   print("alarm called");
@@ -25,6 +24,7 @@ class TimerNotifier extends StateNotifier<TimerState> {
     _isFirstRun = false;
     state = state.copyWith(
       countdownRemaining: duration,
+      countdownInitial: duration,
       countdownQueue: [],
       currentMode: TimerMode.single,
     );
@@ -55,6 +55,8 @@ class TimerNotifier extends StateNotifier<TimerState> {
     });
 
     Duration countdownRemaining = state.countdownRemaining;
+
+    updateInitialDuration(state.countdownRemaining);
 
     if (state.countdownQueue.isNotEmpty && _isFirstRun) {
       countdownRemaining = state.countdownQueue.first;
@@ -88,7 +90,6 @@ class TimerNotifier extends StateNotifier<TimerState> {
     }
 
     scheduleAlarm(Duration(seconds: 10));
-    print("schedule called");
 
     _countdownTimer?.cancel();
     _countdownTimer = Timer.periodic(Duration(seconds: 1), (timer) {

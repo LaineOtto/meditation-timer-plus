@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/cupertino.dart';
@@ -210,79 +211,101 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
     settingsState,
     settingsNotifier,
   ) {
+    final countdownInitial = timerState.countdownInitial.inSeconds;
+    double countdownProgress = timerState.countdownRemaining.inSeconds / countdownInitial;
+
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        // TODO: add total time visible here, format it to look prettier
-        Row(
+        Padding(
+          padding: const EdgeInsets.only(top: 15),
+          child: CustomPaint(
+            size: Size(200, 200),
+            painter: TimerProgressPainter(
+              progress: countdownProgress,
+            ),
+          ),
+        ),
+        Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.timer, size: 40),
-            SizedBox(width: 10),
-            SizedBox(
-              width: 150,
-              child: Text(
-                _displayTimeFormatted(
-                      timerState.countdownQueue,
-                      timerState.countdownRemaining,
-                    ).isNotEmpty
-                    ? _displayTimeFormatted(
-                        timerState.countdownQueue,
-                        timerState.countdownRemaining,
-                      )
-                    : "Countdown Finished",
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  fontFeatures: [FontFeature.tabularFigures()],
-                  fontFamily: 'monospace',
-                ),
-                textAlign: TextAlign.left,
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.timer, size: 40),
+                  SizedBox(width: 10),
+                  SizedBox(
+                    width: 250,
+                    child: Text(
+                      _displayTimeFormatted(
+                            timerState.countdownQueue,
+                            timerState.countdownRemaining,
+                          ).isNotEmpty
+                          ? _displayTimeFormatted(
+                              timerState.countdownQueue,
+                              timerState.countdownRemaining,
+                            )
+                          : "Countdown Finished",
+                      style: Theme.of(context).textTheme.headlineMedium
+                          ?.copyWith(
+                            fontFeatures: [FontFeature.tabularFigures()],
+                            fontFamily: 'monospace',
+                          ),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                ],
               ),
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.timer, size: 40),
+                SizedBox(width: 10),
+                SizedBox(
+                  width: 250,
+                  child: Text(
+                    _displayTimeFormatted(
+                          [],
+                          timerState.stopwatchElapsed,
+                        ).isNotEmpty
+                        ? _displayTimeFormatted([], timerState.stopwatchElapsed)
+                        : "0s",
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      fontFeatures: [FontFeature.tabularFigures()],
+                      fontFamily: 'monospace',
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
-        SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.timer, size: 40),
-            SizedBox(width: 10),
-            SizedBox(
-              width: 150,
-              child: Text(
-                _displayTimeFormatted(
-                      [],
-                      timerState.stopwatchElapsed,
-                    ).isNotEmpty
-                    ? _displayTimeFormatted([], timerState.stopwatchElapsed)
-                    : "0s",
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  fontFeatures: [FontFeature.tabularFigures()],
-                  fontFamily: 'monospace',
-                ),
-                textAlign: TextAlign.left,
+        Padding(
+          padding: const EdgeInsets.only(bottom: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                iconSize: 72,
+                onPressed: () {
+                  timerNotifier.toggleTimers();
+                  settingsNotifier.handleTimerSettingsOnStart();
+                },
+                icon: Icon(timerState.currentIcon),
               ),
-            ),
-          ],
-        ),
-        SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            IconButton(
-              iconSize: 72,
-              onPressed: () {
-                timerNotifier.toggleTimers();
-                settingsNotifier.handleTimerSettingsOnStart();
-              },
-              icon: Icon(timerState.currentIcon),
-            ),
-            SizedBox(width: 15),
-            IconButton(
-              iconSize: 72,
-              onPressed: timerNotifier.resetTimers,
-              icon: Icon(Icons.stop_circle),
-            ),
-          ],
+              SizedBox(width: 15),
+              IconButton(
+                iconSize: 72,
+                onPressed: timerNotifier.resetTimers,
+                icon: Icon(Icons.stop_circle),
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -357,5 +380,49 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
         ),
       ],
     );
+  }
+}
+
+class TimerProgressPainter extends CustomPainter {
+  final double progress; //0.0 to 1.0
+
+  TimerProgressPainter({required this.progress});
+
+  void paint(Canvas canvas, Size size) {
+    final center = size.center(Offset.zero);
+    final radius = size.width / 2;
+
+    final backgroundPaint = Paint()
+      ..color = Colors.grey.shade300
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 10;
+
+    final progressPaint = Paint()
+      ..color = Colors.deepOrange
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 10
+      ..strokeCap = StrokeCap.round;
+
+    canvas.drawCircle(center, radius, backgroundPaint);
+
+    final startAngle = -pi / 2;
+    double currentAngle = -2 * pi * progress;
+
+    if (progress == double.infinity) {
+      currentAngle = 2 * pi;
+    }
+
+    canvas.drawArc(
+      Rect.fromCircle(center: center, radius: radius),
+      startAngle,
+      currentAngle,
+      false,
+      progressPaint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant TimerProgressPainter oldDelegate) {
+    return oldDelegate.progress != progress;
   }
 }

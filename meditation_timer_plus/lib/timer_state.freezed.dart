@@ -20,6 +20,7 @@ mixin _$TimerState {
   bool get isRunning => throw _privateConstructorUsedError;
   Duration get stopwatchElapsed => throw _privateConstructorUsedError;
   Duration get countdownRemaining => throw _privateConstructorUsedError;
+  Duration get countdownInitial => throw _privateConstructorUsedError;
   List<Duration> get countdownQueue => throw _privateConstructorUsedError;
   TimerMode get currentMode => throw _privateConstructorUsedError;
   IconData get currentIcon => throw _privateConstructorUsedError;
@@ -42,6 +43,7 @@ abstract class $TimerStateCopyWith<$Res> {
     bool isRunning,
     Duration stopwatchElapsed,
     Duration countdownRemaining,
+    Duration countdownInitial,
     List<Duration> countdownQueue,
     TimerMode currentMode,
     IconData currentIcon,
@@ -66,6 +68,7 @@ class _$TimerStateCopyWithImpl<$Res, $Val extends TimerState>
     Object? isRunning = null,
     Object? stopwatchElapsed = null,
     Object? countdownRemaining = null,
+    Object? countdownInitial = null,
     Object? countdownQueue = null,
     Object? currentMode = null,
     Object? currentIcon = null,
@@ -83,6 +86,10 @@ class _$TimerStateCopyWithImpl<$Res, $Val extends TimerState>
             countdownRemaining: null == countdownRemaining
                 ? _value.countdownRemaining
                 : countdownRemaining // ignore: cast_nullable_to_non_nullable
+                      as Duration,
+            countdownInitial: null == countdownInitial
+                ? _value.countdownInitial
+                : countdownInitial // ignore: cast_nullable_to_non_nullable
                       as Duration,
             countdownQueue: null == countdownQueue
                 ? _value.countdownQueue
@@ -115,6 +122,7 @@ abstract class _$$TimerStateImplCopyWith<$Res>
     bool isRunning,
     Duration stopwatchElapsed,
     Duration countdownRemaining,
+    Duration countdownInitial,
     List<Duration> countdownQueue,
     TimerMode currentMode,
     IconData currentIcon,
@@ -138,6 +146,7 @@ class __$$TimerStateImplCopyWithImpl<$Res>
     Object? isRunning = null,
     Object? stopwatchElapsed = null,
     Object? countdownRemaining = null,
+    Object? countdownInitial = null,
     Object? countdownQueue = null,
     Object? currentMode = null,
     Object? currentIcon = null,
@@ -155,6 +164,10 @@ class __$$TimerStateImplCopyWithImpl<$Res>
         countdownRemaining: null == countdownRemaining
             ? _value.countdownRemaining
             : countdownRemaining // ignore: cast_nullable_to_non_nullable
+                  as Duration,
+        countdownInitial: null == countdownInitial
+            ? _value.countdownInitial
+            : countdownInitial // ignore: cast_nullable_to_non_nullable
                   as Duration,
         countdownQueue: null == countdownQueue
             ? _value._countdownQueue
@@ -180,6 +193,7 @@ class _$TimerStateImpl with DiagnosticableTreeMixin implements _TimerState {
     required this.isRunning,
     required this.stopwatchElapsed,
     required this.countdownRemaining,
+    required this.countdownInitial,
     required final List<Duration> countdownQueue,
     required this.currentMode,
     required this.currentIcon,
@@ -191,6 +205,8 @@ class _$TimerStateImpl with DiagnosticableTreeMixin implements _TimerState {
   final Duration stopwatchElapsed;
   @override
   final Duration countdownRemaining;
+  @override
+  final Duration countdownInitial;
   final List<Duration> _countdownQueue;
   @override
   List<Duration> get countdownQueue {
@@ -206,7 +222,7 @@ class _$TimerStateImpl with DiagnosticableTreeMixin implements _TimerState {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TimerState(isRunning: $isRunning, stopwatchElapsed: $stopwatchElapsed, countdownRemaining: $countdownRemaining, countdownQueue: $countdownQueue, currentMode: $currentMode, currentIcon: $currentIcon)';
+    return 'TimerState(isRunning: $isRunning, stopwatchElapsed: $stopwatchElapsed, countdownRemaining: $countdownRemaining, countdownInitial: $countdownInitial, countdownQueue: $countdownQueue, currentMode: $currentMode, currentIcon: $currentIcon)';
   }
 
   @override
@@ -217,6 +233,7 @@ class _$TimerStateImpl with DiagnosticableTreeMixin implements _TimerState {
       ..add(DiagnosticsProperty('isRunning', isRunning))
       ..add(DiagnosticsProperty('stopwatchElapsed', stopwatchElapsed))
       ..add(DiagnosticsProperty('countdownRemaining', countdownRemaining))
+      ..add(DiagnosticsProperty('countdownInitial', countdownInitial))
       ..add(DiagnosticsProperty('countdownQueue', countdownQueue))
       ..add(DiagnosticsProperty('currentMode', currentMode))
       ..add(DiagnosticsProperty('currentIcon', currentIcon));
@@ -233,6 +250,8 @@ class _$TimerStateImpl with DiagnosticableTreeMixin implements _TimerState {
                 other.stopwatchElapsed == stopwatchElapsed) &&
             (identical(other.countdownRemaining, countdownRemaining) ||
                 other.countdownRemaining == countdownRemaining) &&
+            (identical(other.countdownInitial, countdownInitial) ||
+                other.countdownInitial == countdownInitial) &&
             const DeepCollectionEquality().equals(
               other._countdownQueue,
               _countdownQueue,
@@ -249,6 +268,7 @@ class _$TimerStateImpl with DiagnosticableTreeMixin implements _TimerState {
     isRunning,
     stopwatchElapsed,
     countdownRemaining,
+    countdownInitial,
     const DeepCollectionEquality().hash(_countdownQueue),
     currentMode,
     currentIcon,
@@ -268,6 +288,7 @@ abstract class _TimerState implements TimerState {
     required final bool isRunning,
     required final Duration stopwatchElapsed,
     required final Duration countdownRemaining,
+    required final Duration countdownInitial,
     required final List<Duration> countdownQueue,
     required final TimerMode currentMode,
     required final IconData currentIcon,
@@ -279,6 +300,8 @@ abstract class _TimerState implements TimerState {
   Duration get stopwatchElapsed;
   @override
   Duration get countdownRemaining;
+  @override
+  Duration get countdownInitial;
   @override
   List<Duration> get countdownQueue;
   @override
