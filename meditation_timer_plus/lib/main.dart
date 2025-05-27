@@ -338,6 +338,17 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
           title: Text("Turn on DnD with timer?"),
         ),
         CheckboxListTile(
+          value: state.silenceRinger,
+          onChanged: (bool? value) {
+            notifier.toggleTimerSettings(
+              TimerSetting.silenceRinger,
+              !state.silenceRinger,
+            );
+          },
+          title: Text("Silence ringer with timer?"),
+        ),
+        Divider(height: 1, thickness: 1, indent: 20, endIndent: 40,),
+        CheckboxListTile(
           value: state.overrideSystemVolume,
           onChanged: (bool? value) {
             notifier.toggleTimerSettings(
@@ -363,26 +374,6 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
               label: "${((state.volumeOverrideValue * 100).toInt())}",
             ),
           ],
-        ),
-        CheckboxListTile(
-          value: state.playSoundOnEachTimer,
-          onChanged: (bool? value) {
-            notifier.toggleTimerSettings(
-              TimerSetting.playSoundOnEachTimer,
-              !state.playSoundOnEachTimer,
-            );
-          },
-          title: Text("Play sound for each timer?"),
-        ),
-        CheckboxListTile(
-          value: state.silenceRinger,
-          onChanged: (bool? value) {
-            notifier.toggleTimerSettings(
-              TimerSetting.silenceRinger,
-              !state.silenceRinger,
-            );
-          },
-          title: Text("Silence ringer with timer?"),
         ),
       ],
     );
