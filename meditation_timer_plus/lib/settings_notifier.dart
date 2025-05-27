@@ -9,7 +9,6 @@ import 'settings_state.dart';
 enum TimerSetting {
   timerStartsDnD,
   overrideSystemVolume,
-  playSoundOnEachTimer,
   silenceRinger,
 }
 
@@ -21,9 +20,6 @@ class SettingsNotifier extends StateNotifier<SettingsState> {
       TimerSetting.timerStartsDnD => state.copyWith(timerStartsDnD: isChecked),
       TimerSetting.overrideSystemVolume => state.copyWith(
         overrideSystemVolume: isChecked,
-      ),
-      TimerSetting.playSoundOnEachTimer => state.copyWith(
-        playSoundOnEachTimer: isChecked,
       ),
       TimerSetting.silenceRinger => state.copyWith(silenceRinger: isChecked),
     };
