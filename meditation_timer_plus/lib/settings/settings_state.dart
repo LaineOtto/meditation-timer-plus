@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'settings_state.freezed.dart';
+part 'settings_state.g.dart';
 
 @freezed
 class SettingsState with _$SettingsState {
@@ -19,4 +20,6 @@ class SettingsState with _$SettingsState {
     volumeOverrideValue: 0,
     runWithScreenOff: true,
   );
+
+  factory SettingsState.fromJson(Map<String, dynamic> json) => _$SettingsStateFromJson(json); 
 }

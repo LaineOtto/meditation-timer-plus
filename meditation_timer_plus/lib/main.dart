@@ -32,7 +32,16 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AndroidAlarmManager.initialize();
 
-  runApp(const ProviderScope(child: MyApp()));
+  final container = ProviderContainer();
+
+  await container.read(settingsNotifierProvider.notifier).loadFromPrefs();
+
+  runApp(
+    UncontrolledProviderScope(
+      container: container,
+      child: const ProviderScope(child: MyApp()),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

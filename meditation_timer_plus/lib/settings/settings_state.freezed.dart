@@ -15,6 +15,10 @@ final _privateConstructorUsedError = UnsupportedError(
   'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
 );
 
+SettingsState _$SettingsStateFromJson(Map<String, dynamic> json) {
+  return _SettingsState.fromJson(json);
+}
+
 /// @nodoc
 mixin _$SettingsState {
   bool get timerStartsDnD => throw _privateConstructorUsedError;
@@ -22,6 +26,9 @@ mixin _$SettingsState {
   bool get silenceRinger => throw _privateConstructorUsedError;
   double get volumeOverrideValue => throw _privateConstructorUsedError;
   bool get runWithScreenOff => throw _privateConstructorUsedError;
+
+  /// Serializes this SettingsState to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
   /// Create a copy of SettingsState
   /// with the given fields replaced by the non-null parameter values.
@@ -161,7 +168,7 @@ class __$$SettingsStateImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$SettingsStateImpl implements _SettingsState {
   const _$SettingsStateImpl({
     required this.timerStartsDnD,
@@ -170,6 +177,9 @@ class _$SettingsStateImpl implements _SettingsState {
     required this.volumeOverrideValue,
     required this.runWithScreenOff,
   });
+
+  factory _$SettingsStateImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SettingsStateImplFromJson(json);
 
   @override
   final bool timerStartsDnD;
@@ -204,6 +214,7 @@ class _$SettingsStateImpl implements _SettingsState {
                 other.runWithScreenOff == runWithScreenOff));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
     runtimeType,
@@ -221,6 +232,11 @@ class _$SettingsStateImpl implements _SettingsState {
   @pragma('vm:prefer-inline')
   _$$SettingsStateImplCopyWith<_$SettingsStateImpl> get copyWith =>
       __$$SettingsStateImplCopyWithImpl<_$SettingsStateImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$SettingsStateImplToJson(this);
+  }
 }
 
 abstract class _SettingsState implements SettingsState {
@@ -231,6 +247,9 @@ abstract class _SettingsState implements SettingsState {
     required final double volumeOverrideValue,
     required final bool runWithScreenOff,
   }) = _$SettingsStateImpl;
+
+  factory _SettingsState.fromJson(Map<String, dynamic> json) =
+      _$SettingsStateImpl.fromJson;
 
   @override
   bool get timerStartsDnD;

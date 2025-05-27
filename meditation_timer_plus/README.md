@@ -19,7 +19,7 @@
 - [x] Option to silence ringer
 - [x] Make run with screen off
 - [ ] Make ui update after trigger while screen is off
-- [ ] Persist settings when app restarts or closes
+- [x] Persist settings when app restarts or closes
 
 ## Possible future features, in no particular order
 
