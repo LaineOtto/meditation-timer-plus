@@ -8,7 +8,7 @@
 
 - [x] Simultaneous stopwatch and countdown, so that if you decide to go over your end planned time you can tell how long your full session was
 - [x] Program an order into countdown
-  - e.g. 5min -> 5min -> 5min -> 30 min, etc
+  - [x] e.g. 5min -> 5min -> 5min -> 30 min, etc
 - [x] Enable user control of queue
 - [x] Play bell/gong at each countdown timer finish
 - [x] Change volume on gong, override device volume setting
@@ -26,7 +26,7 @@
 - [ ] Changeable sound
 - [x] A dial for the countdown?
 - [ ] Quick cheatsheet/cliffnotes of different styles of practice
-  - e.g. TMI, MCTB, Kasina, Metta/loving-kindness, Brahmavihara, etc
+  - [ ] e.g. TMI, MCTB, Kasina, Metta/loving-kindness, Brahmavihara, etc
 - [ ] Kasina images
 - [ ] Adjustable brightness
 - [ ] Upload your own manually
