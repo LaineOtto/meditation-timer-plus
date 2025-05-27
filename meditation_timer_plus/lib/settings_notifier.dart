@@ -45,10 +45,10 @@ class SettingsNotifier extends StateNotifier<SettingsState> {
 
   Future<void> overrideVolume(double value) async {
     await FlutterVolumeController.updateShowSystemUI(
-      true,
+      false,
     ); //TODO: set as false once testing is done for uix purposes
     await FlutterVolumeController.setVolume(
-      state.volumeOverrideValue,
+      value,
       stream: AudioStream.music,
     );
   }
@@ -67,7 +67,7 @@ class SettingsNotifier extends StateNotifier<SettingsState> {
   Future<void> enableDnD() async {
     bool isDnDEnabled = await checkNotificationPolicyAccess();
     if (isDnDEnabled) {
-      await dndPlugin.setInterruptionFilter(InterruptionFilter.none);
+      await dndPlugin.setInterruptionFilter(InterruptionFilter.alarms);
     }
   }
 

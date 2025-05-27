@@ -388,6 +388,7 @@ class TimerProgressPainter extends CustomPainter {
 
   TimerProgressPainter({required this.progress});
 
+  @override
   void paint(Canvas canvas, Size size) {
     final center = size.center(Offset.zero);
     final radius = size.width / 2;
