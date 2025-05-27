@@ -7,8 +7,12 @@ import 'package:audioplayers/audioplayers.dart';
 import 'timer_state.dart';
 
 @pragma('vm:entry-point')
-void alarmCallback() {
+Future<void> alarmCallback() async {
   print("alarm called");
+
+  final timerSoundPlayer = AudioPlayer();
+  await timerSoundPlayer.play(AssetSource("gong.wav"));
+  print(timerSoundPlayer.play(AssetSource("gong.wav")).toString());
 }
 
 class TimerNotifier extends StateNotifier<TimerState> {
@@ -90,7 +94,7 @@ class TimerNotifier extends StateNotifier<TimerState> {
       );
     }
 
-    scheduleAlarm(Duration(seconds: 10));
+    scheduleAlarm(countdownRemaining);
 
     _countdownTimer?.cancel();
     _countdownTimer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -178,9 +182,5 @@ class TimerNotifier extends StateNotifier<TimerState> {
       countdownRemaining: Duration(seconds: 0),
       countdownQueue: [],
     );
-
-    final timerSoundPlayer = AudioPlayer();
-    await timerSoundPlayer.play(AssetSource("gong.wav"));
-    print(timerSoundPlayer.play(AssetSource("gong.wav")).toString());
   }
 }
