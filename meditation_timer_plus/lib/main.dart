@@ -9,6 +9,7 @@ import 'timer_state.dart';
 import 'settings/settings_notifier.dart';
 import 'settings/settings_state.dart';
 import 'settings/platform_settings_service.dart';
+import 'timer_utils.dart';
 
 final timerNotifierProvider = StateNotifierProvider<TimerNotifier, TimerState>((
   ref,
@@ -87,35 +88,16 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
     });
   }
 
-  String displayTimeFormatted(Duration timeRemaining) {
-    final parts = <String>[];
-
-    final hours = timeRemaining.inHours;
-    final minutes = timeRemaining.inMinutes % 60;
-    final seconds = timeRemaining.inSeconds % 60;
-
-    if (hours > 0) {
-      parts.add("${hours}h");
-    }
-    if (minutes > 0) {
-      parts.add("${minutes}m");
-    }
-    if (seconds > 0) {
-      parts.add("${seconds}s");
-    }
-
-    return parts.join(", ");
-  }
-
   void _showTimePickerDialog(context, queueString) {
     final timerNotifier = ref.read(timerNotifierProvider.notifier);
     final currentDuration = ref.read(timerNotifierProvider).countdownRemaining;
     final List<Duration> queue = [];
+    final timerUtils = TimerUtils();
 
     String _formatQueueForDisplay() {
       String formattedString = "Queue: ";
       if (queue.isEmpty) return "${formattedString}Empty";
-      return "$formattedString${queue.map(displayTimeFormatted).join(" → ")}";
+      return "$formattedString${queue.map(timerUtils.displayTimeFormatted).join(" → ")}";
     }
 
     print("state: $queueString");
@@ -250,6 +232,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
     settingsState,
     settingsNotifier,
   ) {
+    final timerUtils = TimerUtils();
     final countdownInitial = timerState.countdownInitial.inSeconds;
     double countdownProgress =
         timerState.countdownRemaining.inSeconds / countdownInitial;
@@ -280,10 +263,12 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        displayTimeFormatted(
-                              timerState.countdownRemaining,
-                            ).isNotEmpty
-                            ? displayTimeFormatted(
+                        timerUtils
+                                .displayTimeFormatted(
+                                  timerState.countdownRemaining,
+                                )
+                                .isNotEmpty
+                            ? timerUtils.displayTimeFormatted(
                                 timerState.countdownRemaining,
                               )
                             : "Countdown Finished",
@@ -310,10 +295,12 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                 SizedBox(
                   width: 250,
                   child: Text(
-                    displayTimeFormatted(
-                          timerState.stopwatchElapsed,
-                        ).isNotEmpty
-                        ? displayTimeFormatted(timerState.stopwatchElapsed)
+                    timerUtils
+                            .displayTimeFormatted(timerState.stopwatchElapsed)
+                            .isNotEmpty
+                        ? timerUtils.displayTimeFormatted(
+                            timerState.stopwatchElapsed,
+                          )
                         : "0s",
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontFeatures: [FontFeature.tabularFigures()],
