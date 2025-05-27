@@ -6,23 +6,23 @@
 
 ### Stopwatch/Countdown
 
-- [x] Simultaneous stopwatch and countdown, so that if you decide to go over your end planned time you can tell how long your full session was
-- [x] Program an order into countdown
+- [x]Simultaneous stopwatch and countdown, so that if you decide to go over your end planned time you can tell how long your full session was
+- [x]Program an order into countdown
   - e.g. 5min -> 5min -> 5min -> 30 min, etc
-- [x] Enable user control of queue
+- [x]Enable user control of queue
 - Play bell/gong at each countdown timer finish
 - Change volume on gong, override device volume setting
 
 ### Don't distract, be reliable
 
-- [x] Option to turn on Do Not Disturb
-- [x] Option to silence ringer
+- [x]Option to turn on Do Not Disturb
+- [x]Option to silence ringer
 - Make run with screen off
 
 ## Possible future features, in no particular order
 
 - Changeable sound
-- A dial for the countdown?
+- [x]A dial for the countdown?
 - Quick cheatsheet/cliffnotes of different styles of practice
   - e.g. TMI, MCTB, Kasina, Metta/loving-kindness, Brahmavihara, etc
 - Kasina images
