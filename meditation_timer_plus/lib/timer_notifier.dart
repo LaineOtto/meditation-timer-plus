@@ -17,11 +17,11 @@ Future<void> alarmCallback() async {
 
 class TimerNotifier extends StateNotifier<TimerState> {
   TimerNotifier() : super(TimerState.initial()) {
-    _stopwatch = Stopwatch();
+    _stopwatchElapsed = Stopwatch();
   }
 
-  late Stopwatch _stopwatch;
-  Timer? _stopwatchTimer;
+  late Stopwatch _stopwatchElapsed;
+  Timer? _stopwatchTicker;
   Timer? _countdownTimer;
   bool _isFirstRun = true;
 
@@ -47,22 +47,8 @@ class TimerNotifier extends StateNotifier<TimerState> {
     );
   }
 
-  void startTimers() {
-    if (state.isRunning) return;
-
-    _stopwatch.start();
-
-    _stopwatchTimer?.cancel();
-    _stopwatchTimer = Timer.periodic(Duration(seconds: 1), (_) {
-      if (_stopwatch.isRunning) {
-        state = state.copyWith(stopwatchElapsed: _stopwatch.elapsed);
-      }
-    });
-
+  void _initializeCountdown() {
     Duration countdownRemaining = state.countdownRemaining;
-
-    updateInitialDuration(state.countdownRemaining);
-
     if (state.countdownQueue.isNotEmpty && _isFirstRun) {
       countdownRemaining = state.countdownQueue.first;
       _isFirstRun = false;
@@ -93,9 +79,9 @@ class TimerNotifier extends StateNotifier<TimerState> {
         countdownRemaining: countdownRemaining,
       );
     }
+  }
 
-    scheduleAlarm(countdownRemaining);
-
+  void _startCountdownTimer() {
     _countdownTimer?.cancel();
     _countdownTimer = Timer.periodic(Duration(seconds: 1), (timer) {
       _tickTimer(timer);
@@ -105,6 +91,28 @@ class TimerNotifier extends StateNotifier<TimerState> {
       isRunning: true,
       currentIcon: Icons.pause_circle_filled,
     );
+  }
+
+  void _initializeStopwatch() {
+    _stopwatchElapsed.start();
+    _stopwatchTicker?.cancel();
+    _stopwatchTicker = Timer.periodic(Duration(seconds: 1), (_) {
+      if (_stopwatchElapsed.isRunning) {
+        state = state.copyWith(stopwatchElapsed: _stopwatchElapsed.elapsed);
+      }
+    });
+  }
+
+  void startTimers() {
+    if (state.isRunning) return;
+
+    updateInitialDuration(state.countdownRemaining);
+
+    _initializeStopwatch();
+    _initializeCountdown();
+    _startCountdownTimer();
+
+    scheduleAlarm(state.countdownRemaining);
   }
 
   void _tickTimer(Timer timer) {
@@ -132,9 +140,9 @@ class TimerNotifier extends StateNotifier<TimerState> {
   }
 
   void pauseTimers() {
-    _stopwatch.stop();
+    _stopwatchElapsed.stop();
     _countdownTimer?.cancel();
-    _stopwatchTimer?.cancel();
+    _stopwatchTicker?.cancel();
 
     state = state.copyWith(
       isRunning: false,
@@ -143,10 +151,10 @@ class TimerNotifier extends StateNotifier<TimerState> {
   }
 
   void resetTimers() {
-    _stopwatch.stop();
-    _stopwatch.reset();
+    _stopwatchElapsed.stop();
+    _stopwatchElapsed.reset();
     _countdownTimer?.cancel();
-    _stopwatchTimer?.cancel();
+    _stopwatchTicker?.cancel();
     _isFirstRun = true;
 
     state = TimerState.initial();
