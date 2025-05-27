@@ -8,6 +8,7 @@ import 'timer_notifier.dart';
 import 'timer_state.dart';
 import 'settings_notifier.dart';
 import 'settings_state.dart';
+import 'platform_settings_service.dart';
 
 final timerNotifierProvider = StateNotifierProvider<TimerNotifier, TimerState>((
   ref,
@@ -17,8 +18,13 @@ final timerNotifierProvider = StateNotifierProvider<TimerNotifier, TimerState>((
 
 final settingsNotifierProvider =
     StateNotifierProvider<SettingsNotifier, SettingsState>((ref) {
-      return SettingsNotifier();
+      final PlatformService = ref.read(PlatformServiceProvider);
+      return SettingsNotifier(PlatformService);
     });
+
+final PlatformServiceProvider = Provider<PlatformSettingsService>((ref) {
+  return PlatformSettingsService();
+});
 
 enum TimerMode { single, queue }
 
@@ -212,7 +218,8 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
     settingsNotifier,
   ) {
     final countdownInitial = timerState.countdownInitial.inSeconds;
-    double countdownProgress = timerState.countdownRemaining.inSeconds / countdownInitial;
+    double countdownProgress =
+        timerState.countdownRemaining.inSeconds / countdownInitial;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -221,9 +228,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
           padding: const EdgeInsets.only(top: 15),
           child: CustomPaint(
             size: Size(200, 200),
-            painter: TimerProgressPainter(
-              progress: countdownProgress,
-            ),
+            painter: TimerProgressPainter(progress: countdownProgress),
           ),
         ),
         Column(
@@ -347,7 +352,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
           },
           title: Text("Silence ringer with timer?"),
         ),
-        Divider(height: 1, thickness: 1, indent: 20, endIndent: 40,),
+        Divider(height: 1, thickness: 1, indent: 20, endIndent: 40),
         CheckboxListTile(
           value: state.overrideSystemVolume,
           onChanged: (bool? value) {

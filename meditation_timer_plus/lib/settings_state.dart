@@ -6,7 +6,6 @@ part 'settings_state.freezed.dart';
 class SettingsState with _$SettingsState {
   const factory SettingsState({
     required bool timerStartsDnD,
-    required double soundVolume,
     required bool overrideSystemVolume,
     required bool silenceRinger,
     required double volumeOverrideValue,
@@ -15,7 +14,6 @@ class SettingsState with _$SettingsState {
 
   factory SettingsState.initial() => const SettingsState(
     timerStartsDnD: true,
-    soundVolume: 0.0,
     overrideSystemVolume: true,
     silenceRinger: true,
     volumeOverrideValue: 0,

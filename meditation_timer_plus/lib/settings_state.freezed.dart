@@ -18,7 +18,6 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$SettingsState {
   bool get timerStartsDnD => throw _privateConstructorUsedError;
-  double get soundVolume => throw _privateConstructorUsedError;
   bool get overrideSystemVolume => throw _privateConstructorUsedError;
   bool get silenceRinger => throw _privateConstructorUsedError;
   double get volumeOverrideValue => throw _privateConstructorUsedError;
@@ -40,7 +39,6 @@ abstract class $SettingsStateCopyWith<$Res> {
   @useResult
   $Res call({
     bool timerStartsDnD,
-    double soundVolume,
     bool overrideSystemVolume,
     bool silenceRinger,
     double volumeOverrideValue,
@@ -64,7 +62,6 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
   @override
   $Res call({
     Object? timerStartsDnD = null,
-    Object? soundVolume = null,
     Object? overrideSystemVolume = null,
     Object? silenceRinger = null,
     Object? volumeOverrideValue = null,
@@ -76,10 +73,6 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
                 ? _value.timerStartsDnD
                 : timerStartsDnD // ignore: cast_nullable_to_non_nullable
                       as bool,
-            soundVolume: null == soundVolume
-                ? _value.soundVolume
-                : soundVolume // ignore: cast_nullable_to_non_nullable
-                      as double,
             overrideSystemVolume: null == overrideSystemVolume
                 ? _value.overrideSystemVolume
                 : overrideSystemVolume // ignore: cast_nullable_to_non_nullable
@@ -113,7 +106,6 @@ abstract class _$$SettingsStateImplCopyWith<$Res>
   @useResult
   $Res call({
     bool timerStartsDnD,
-    double soundVolume,
     bool overrideSystemVolume,
     bool silenceRinger,
     double volumeOverrideValue,
@@ -136,7 +128,6 @@ class __$$SettingsStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? timerStartsDnD = null,
-    Object? soundVolume = null,
     Object? overrideSystemVolume = null,
     Object? silenceRinger = null,
     Object? volumeOverrideValue = null,
@@ -148,10 +139,6 @@ class __$$SettingsStateImplCopyWithImpl<$Res>
             ? _value.timerStartsDnD
             : timerStartsDnD // ignore: cast_nullable_to_non_nullable
                   as bool,
-        soundVolume: null == soundVolume
-            ? _value.soundVolume
-            : soundVolume // ignore: cast_nullable_to_non_nullable
-                  as double,
         overrideSystemVolume: null == overrideSystemVolume
             ? _value.overrideSystemVolume
             : overrideSystemVolume // ignore: cast_nullable_to_non_nullable
@@ -178,7 +165,6 @@ class __$$SettingsStateImplCopyWithImpl<$Res>
 class _$SettingsStateImpl implements _SettingsState {
   const _$SettingsStateImpl({
     required this.timerStartsDnD,
-    required this.soundVolume,
     required this.overrideSystemVolume,
     required this.silenceRinger,
     required this.volumeOverrideValue,
@@ -187,8 +173,6 @@ class _$SettingsStateImpl implements _SettingsState {
 
   @override
   final bool timerStartsDnD;
-  @override
-  final double soundVolume;
   @override
   final bool overrideSystemVolume;
   @override
@@ -200,7 +184,7 @@ class _$SettingsStateImpl implements _SettingsState {
 
   @override
   String toString() {
-    return 'SettingsState(timerStartsDnD: $timerStartsDnD, soundVolume: $soundVolume, overrideSystemVolume: $overrideSystemVolume, silenceRinger: $silenceRinger, volumeOverrideValue: $volumeOverrideValue, runWithScreenOff: $runWithScreenOff)';
+    return 'SettingsState(timerStartsDnD: $timerStartsDnD, overrideSystemVolume: $overrideSystemVolume, silenceRinger: $silenceRinger, volumeOverrideValue: $volumeOverrideValue, runWithScreenOff: $runWithScreenOff)';
   }
 
   @override
@@ -210,8 +194,6 @@ class _$SettingsStateImpl implements _SettingsState {
             other is _$SettingsStateImpl &&
             (identical(other.timerStartsDnD, timerStartsDnD) ||
                 other.timerStartsDnD == timerStartsDnD) &&
-            (identical(other.soundVolume, soundVolume) ||
-                other.soundVolume == soundVolume) &&
             (identical(other.overrideSystemVolume, overrideSystemVolume) ||
                 other.overrideSystemVolume == overrideSystemVolume) &&
             (identical(other.silenceRinger, silenceRinger) ||
@@ -226,7 +208,6 @@ class _$SettingsStateImpl implements _SettingsState {
   int get hashCode => Object.hash(
     runtimeType,
     timerStartsDnD,
-    soundVolume,
     overrideSystemVolume,
     silenceRinger,
     volumeOverrideValue,
@@ -245,7 +226,6 @@ class _$SettingsStateImpl implements _SettingsState {
 abstract class _SettingsState implements SettingsState {
   const factory _SettingsState({
     required final bool timerStartsDnD,
-    required final double soundVolume,
     required final bool overrideSystemVolume,
     required final bool silenceRinger,
     required final double volumeOverrideValue,
@@ -254,8 +234,6 @@ abstract class _SettingsState implements SettingsState {
 
   @override
   bool get timerStartsDnD;
-  @override
-  double get soundVolume;
   @override
   bool get overrideSystemVolume;
   @override

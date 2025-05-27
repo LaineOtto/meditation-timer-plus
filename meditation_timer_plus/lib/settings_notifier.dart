@@ -5,6 +5,7 @@ import 'package:sound_mode/sound_mode.dart';
 import 'package:sound_mode/utils/ringer_mode_statuses.dart';
 
 import 'settings_state.dart';
+import 'platform_settings_service.dart';
 
 enum TimerSetting {
   timerStartsDnD,
@@ -13,7 +14,9 @@ enum TimerSetting {
 }
 
 class SettingsNotifier extends StateNotifier<SettingsState> {
-  SettingsNotifier() : super(SettingsState.initial());
+  SettingsNotifier(this._platformSettingsService) : super(SettingsState.initial());
+
+  final PlatformSettingsService _platformSettingsService;
 
   void toggleTimerSettings(TimerSetting setting, bool isChecked) {
     state = switch (setting) {
@@ -26,51 +29,19 @@ class SettingsNotifier extends StateNotifier<SettingsState> {
     print(state);
   }
 
-  void handleTimerSettingsOnStart() {
-    if (state.overrideSystemVolume == true) {
-      overrideVolume(state.volumeOverrideValue);
-    }
-    if (state.timerStartsDnD == true) {
-      enableDnD();
-    }
-  }
-
   void setVolumeOverrideValue(double value) {
     state = state.copyWith(volumeOverrideValue: value);
   }
 
-  Future<void> overrideVolume(double value) async {
-    await FlutterVolumeController.updateShowSystemUI(
-      false,
-    ); //TODO: set as false once testing is done for uix purposes
-    await FlutterVolumeController.setVolume(
-      value,
-      stream: AudioStream.music,
-    );
-  }
-
-  final dndPlugin = DoNotDisturbPlugin();
-  Future<bool> checkNotificationPolicyAccess() async {
-    bool accessGranted = await dndPlugin.isNotificationPolicyAccessGranted();
-    if (accessGranted) {
-      return true;
-    } else {
-      await dndPlugin.openNotificationPolicyAccessSettings();
-      return false;
+  Future<void> handleTimerSettingsOnStart() async {
+    if (state.overrideSystemVolume) {
+      await _platformSettingsService.setSystemVolumeToOverrideVolume(state.volumeOverrideValue);
     }
-  }
-
-  Future<void> enableDnD() async {
-    bool isDnDEnabled = await checkNotificationPolicyAccess();
-    if (isDnDEnabled) {
-      await dndPlugin.setInterruptionFilter(InterruptionFilter.alarms);
+    if (state.timerStartsDnD) {
+      await _platformSettingsService.enableDnD();
     }
-  }
-
-  Future<void> silenceRinger() async {
-    bool isDnDEnabled = await checkNotificationPolicyAccess();
-    if (isDnDEnabled) {
-      await SoundMode.setSoundMode(RingerModeStatus.silent);
+    if (state.silenceRinger) {
+      await _platformSettingsService.silenceRinger();
     }
   }
 }
