@@ -87,20 +87,35 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
     });
   }
 
+  String displayTimeFormatted(Duration timeRemaining) {
+    final parts = <String>[];
+
+    final hours = timeRemaining.inHours;
+    final minutes = timeRemaining.inMinutes % 60;
+    final seconds = timeRemaining.inSeconds % 60;
+
+    if (hours > 0) {
+      parts.add("${hours}h");
+    }
+    if (minutes > 0) {
+      parts.add("${minutes}m");
+    }
+    if (seconds > 0) {
+      parts.add("${seconds}s");
+    }
+
+    return parts.join(", ");
+  }
+
   void _showTimePickerDialog(context, queueString) {
     final timerNotifier = ref.read(timerNotifierProvider.notifier);
     final currentDuration = ref.read(timerNotifierProvider).countdownRemaining;
     final List<Duration> queue = [];
 
-    String _formatQueueForDisplay(queueString) {
-      String formattedString = "";
-      if (queueString == "[]") {
-        formattedString = "${formattedString}Empty";
-      } else {
-        formattedString = "${formattedString}$queueString";
-      }
-
-      return formattedString;
+    String _formatQueueForDisplay() {
+      String formattedString = "Queue: ";
+      if (queue.isEmpty) return "${formattedString}Empty";
+      return "$formattedString${queue.map(displayTimeFormatted).join(" → ")}";
     }
 
     print("state: $queueString");
@@ -118,7 +133,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
             children: [
               Flexible(
                 child: Text(
-                  _formatQueueForDisplay(queueString),
+                  _formatQueueForDisplay(),
                   style: TextStyle(fontSize: 20),
                 ),
               ),
@@ -162,28 +177,6 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
     }
 
     pickNextDuration();
-  }
-
-  String _displayTimeFormatted(Duration timeRemaining) {
-    final parts = <String>[];
-
-    final hours = timeRemaining.inHours;
-    final minutes = timeRemaining.inMinutes % 60;
-    final seconds = timeRemaining.inSeconds % 60;
-
-    if (hours > 0) {
-      parts.add("${hours}h");
-    }
-
-    if (minutes > 0) {
-      parts.add("${minutes}m");
-    }
-
-    if (seconds > 0) {
-      parts.add("${seconds}s");
-    }
-
-    return parts.join(", ");
   }
 
   @override
@@ -273,7 +266,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.timer, size: 40),
+                  Icon(Icons.schedule, size: 40),
                   SizedBox(width: 10),
                   SizedBox(
                     width: 250,
@@ -281,10 +274,10 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        _displayTimeFormatted(
+                        displayTimeFormatted(
                               timerState.countdownRemaining,
                             ).isNotEmpty
-                            ? _displayTimeFormatted(
+                            ? displayTimeFormatted(
                                 timerState.countdownRemaining,
                               )
                             : "Countdown Finished",
@@ -311,10 +304,10 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                 SizedBox(
                   width: 250,
                   child: Text(
-                    _displayTimeFormatted(
+                    displayTimeFormatted(
                           timerState.stopwatchElapsed,
                         ).isNotEmpty
-                        ? _displayTimeFormatted(timerState.stopwatchElapsed)
+                        ? displayTimeFormatted(timerState.stopwatchElapsed)
                         : "0s",
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontFeatures: [FontFeature.tabularFigures()],
