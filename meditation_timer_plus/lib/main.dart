@@ -238,22 +238,28 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                   SizedBox(width: 10),
                   SizedBox(
                     width: 250,
-                    child: Text(
-                      _displayTimeFormatted(
-                            timerState.countdownQueue,
-                            timerState.countdownRemaining,
-                          ).isNotEmpty
-                          ? _displayTimeFormatted(
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        _displayTimeFormatted(
                               timerState.countdownQueue,
                               timerState.countdownRemaining,
-                            )
-                          : "Countdown Finished",
-                      style: Theme.of(context).textTheme.headlineMedium
-                          ?.copyWith(
-                            fontFeatures: [FontFeature.tabularFigures()],
-                            fontFamily: 'monospace',
-                          ),
-                      textAlign: TextAlign.left,
+                            ).isNotEmpty
+                            ? _displayTimeFormatted(
+                                timerState.countdownQueue,
+                                timerState.countdownRemaining,
+                              )
+                            : "Countdown Finished",
+                        style: Theme.of(context).textTheme.headlineMedium
+                            ?.copyWith(
+                              fontFeatures: [FontFeature.tabularFigures()],
+                              fontFamily: 'monospace',
+                            ),
+                        textAlign: TextAlign.left,
+                        softWrap: false,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ),
                 ],
