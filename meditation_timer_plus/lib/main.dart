@@ -27,7 +27,7 @@ final platformServiceProvider = Provider<PlatformSettingsService>((ref) {
   return PlatformSettingsService();
 });
 
-enum TimerMode { single, queue }
+// enum TimerMode { single, queue }
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -88,19 +88,41 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
     });
   }
 
-  void _showTimePickerDialog(context, queueString) {
+  void _showTimePickerDialog(context, queueString, bool isMultiple) {
     final timerNotifier = ref.read(timerNotifierProvider.notifier);
     final currentDuration = ref.read(timerNotifierProvider).countdownRemaining;
     final List<Duration> queue = [];
     final timerUtils = TimerUtils();
 
-    String _formatQueueForDisplay() {
+    String formatQueueForDisplay() {
       String formattedString = "Queue: ";
       if (queue.isEmpty) return "${formattedString}Empty";
       return "$formattedString${queue.map(timerUtils.displayTimeFormatted).join(" → ")}";
     }
 
-    print("state: $queueString");
+    List<Widget> buildButtons({
+      required TimerMode timerMode,
+      required Duration selected,
+      required VoidCallback onAddAnother,
+      required VoidCallback onDone,
+    }) {
+      List<Widget> buttons = [];
+      if (timerMode == TimerMode.queue) {
+        buttons.add(
+          CupertinoButton(
+            child: const Text('Add another'),
+            onPressed: onAddAnother,
+          ),
+        );
+      }
+      buttons.add(
+        CupertinoButton(
+          child: const Text('Done'),
+          onPressed: onDone,
+        ),
+      );
+      return buttons;
+    }
 
     void pickNextDuration() {
       Duration selected = const Duration(minutes: 1);
@@ -108,61 +130,72 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
       showCupertinoModalPopup(
         context: context,
         builder: (_) => Material(
-          child: Container(
-            color: CupertinoColors.systemBackground.resolveFrom(context),
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    _formatQueueForDisplay(),
-                    style: TextStyle(fontSize: 25, color: Colors.black),
-                    softWrap: true,
-                    textAlign: TextAlign.left,
-                  ),
+          child: Consumer(
+            builder: (context, ref, child) {
+              final timerState = ref.watch(timerNotifierProvider);
+
+              void handleAddAnother() {
+                queue.add(selected);
+                Navigator.of(context).pop();
+                pickNextDuration();
+              }
+
+              void handleDone() {
+                queue.add(selected);
+                Navigator.of(context).pop();
+                if (queue.length == 1) {
+                  timerNotifier.updateInitialDuration(selected);
+                } else {
+                  timerNotifier.setTime(queue);
+                }
+              }
+
+              return Container(
+                color: CupertinoColors.systemBackground.resolveFrom(context),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16,
+                  horizontal: 8,
                 ),
-                SizedBox(
-                  // height: 200,
-                  child: CupertinoTimerPicker(
-                    mode: CupertinoTimerPickerMode.hm,
-                    initialTimerDuration: currentDuration,
-                    onTimerDurationChanged: (d) => selected = d,
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    CupertinoButton(
-                      child: const Text('Add another'),
-                      onPressed: () {
-                        queue.add(selected);
-                        Navigator.of(context).pop();
-                        pickNextDuration();
-                      },
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        formatQueueForDisplay(),
+                        style: const TextStyle(fontSize: 25, color: Colors.black),
+                        softWrap: true,
+                        textAlign: TextAlign.left,
+                      ),
                     ),
-                    CupertinoButton(
-                      child: Text("Done"),
-                      onPressed: () {
-                        queue.add(selected);
-                        Navigator.of(context).pop();
-                        if (queue.length == 1) {
-                          timerNotifier.updateInitialDuration(selected);
-                        } else {
-                          timerNotifier.setTime(queue);
-                        }
-                      },
+                    SizedBox(
+                      child: CupertinoTimerPicker(
+                        mode: CupertinoTimerPickerMode.hm,
+                        initialTimerDuration: currentDuration,
+                        onTimerDurationChanged: (d) => selected = d,
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: buildButtons(
+                        timerMode: timerState.currentMode,
+                        selected: selected,
+                        onAddAnother: handleAddAnother,
+                        onDone: handleDone,
+                      ),
                     ),
                   ],
                 ),
-              ],
-            ),
+              );
+            },
           ),
         ),
       );
     }
+
+
+    
 
     pickNextDuration();
   }
@@ -196,12 +229,25 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                   menuChildren: [
                     MenuItemButton(
                       onPressed: () => {
+                        debugPrint("set queue false"),
                         _showTimePickerDialog(
                           context,
                           timerState.countdownQueue.toString(),
+                          timerNotifier.setQueueMode(false),
                         ),
                       },
                       child: Text("Set Timer Duration"),
+                    ),
+                    MenuItemButton(
+                      onPressed: () => {
+                        print("set queue true"),
+                        _showTimePickerDialog(
+                          context,
+                          timerState.countdownQueue.toString(),
+                          timerNotifier.setQueueMode(true),
+                        ),
+                      },
+                      child: Text("Set Multiple Durations"),
                     ),
                   ],
                   builder: (context, controller, child) => IconButton(

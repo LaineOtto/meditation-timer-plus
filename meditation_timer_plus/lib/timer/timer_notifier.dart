@@ -46,6 +46,16 @@ class TimerNotifier extends StateNotifier<TimerState> {
     );
   }
 
+  bool setQueueMode(bool isMultiple) {
+    if (isMultiple) {
+      state = state.copyWith(currentMode: TimerMode.queue);
+      return true;
+    } else {
+      state = state.copyWith(currentMode: TimerMode.single);
+      return false;
+    }
+  }
+
   void _advanceQueue() {
     Duration countdownRemaining = state.countdownQueue.first;
     state = state.copyWith(
