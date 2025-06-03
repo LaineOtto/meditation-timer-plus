@@ -46,6 +46,10 @@ class TimerNotifier extends StateNotifier<TimerState> {
     );
   }
 
+  Future<void> cancelAlarm () async {
+    await AndroidAlarmManager.cancel(0);
+  }
+
   bool setQueueMode(bool isMultiple) {
     if (isMultiple) {
       state = state.copyWith(currentMode: TimerMode.queue);
@@ -154,6 +158,7 @@ class TimerNotifier extends StateNotifier<TimerState> {
     _stopwatchElapsed.stop();
     _countdownTimer?.cancel();
     _stopwatchTicker?.cancel();
+    cancelAlarm();
 
     state = state.copyWith(
       isRunning: false,
@@ -167,6 +172,7 @@ class TimerNotifier extends StateNotifier<TimerState> {
     _countdownTimer?.cancel();
     _stopwatchTicker?.cancel();
     _isFirstRun = true;
+    cancelAlarm();
 
     state = TimerState.initial();
   }
