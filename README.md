@@ -5,18 +5,18 @@ A meditation timer/practice app that takes all the features I like into one plac
 
 ### Stopwatch/Countdown
 
-- Simultaneous stopwatch and countdown, so that if you decide to go over your end planned time you can tell how long your full session was
-- Program an order into countdown
-  - e.g. 5min -> 5min -> 5min -> 30 min, etc
-- Enable user control of queue
-- Play bell/gong at each countdown timer finish
-- Change volume on gong, override device volume setting
+- [x] Simultaneous stopwatch and countdown, so that if you decide to go over your end planned time you can tell how long your full session was
+- [x] Program an order into countdown
+  - [x] e.g. 5min -> 5min -> 5min -> 30 min, etc
+- [x] Enable user control of queue
+- [x] Play bell/gong at each countdown timer finish
+- [x] Change volume on gong, override device volume setting
 
 ### Don't distract, be reliable
 
-- Option to turn on Do Not Disturb
-- Option to silence ringer
-- Make run with screen off
+- [x] Option to turn on Do Not Disturb
+- [x] Option to silence ringer
+- [x] Make run with screen off
 
 ## Possible future features, in no particular order
 
