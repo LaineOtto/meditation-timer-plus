@@ -94,12 +94,6 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
     final List<Duration> queue = [];
     final timerUtils = TimerUtils();
 
-    String formatQueueForDisplay() {
-      String formattedString = "Queue: ";
-      if (queue.isEmpty) return "${formattedString}Empty";
-      return "$formattedString${queue.map(timerUtils.displayTimeFormatted).join(" → ")}";
-    }
-
     List<Widget> buildButtons({
       required TimerMode timerMode,
       required Duration selected,
@@ -116,10 +110,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
         );
       }
       buttons.add(
-        CupertinoButton(
-          child: const Text('Done'),
-          onPressed: onDone,
-        ),
+        CupertinoButton(child: const Text('Done'), onPressed: onDone),
       );
       return buttons;
     }
@@ -163,8 +154,13 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        formatQueueForDisplay(),
-                        style: const TextStyle(fontSize: 25, color: Colors.black),
+                        timerUtils.formatQueueForDisplay(
+                          timerState.countdownQueue,
+                        ),
+                        style: const TextStyle(
+                          fontSize: 25,
+                          color: Colors.black,
+                        ),
                         softWrap: true,
                         textAlign: TextAlign.left,
                       ),
@@ -193,9 +189,6 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
         ),
       );
     }
-
-
-    
 
     pickNextDuration();
   }
@@ -301,7 +294,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.schedule, size: 40),
+                  Icon(Icons.alarm, size: 40),
                   SizedBox(width: 10),
                   SizedBox(
                     width: 250,
@@ -336,7 +329,30 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.timer, size: 40),
+                Icon(Icons.schedule, size: 40),
+                SizedBox(width: 10),
+                SizedBox(
+                  width: 250,
+                  child: Text(
+                    timerState.countdownQueue.isNotEmpty
+                      ? timerUtils.formatQueueForDisplay(
+                          timerState.countdownQueue,
+                        )
+                      : "No Queue",
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      fontFeatures: [FontFeature.tabularFigures()],
+                      fontFamily: 'monospace',
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.timer_sharp, size: 40),
                 SizedBox(width: 10),
                 SizedBox(
                   width: 250,

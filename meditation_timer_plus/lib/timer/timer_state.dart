@@ -23,8 +23,8 @@ class TimerState with _$TimerState {
     stopwatchElapsed: Duration.zero,
     countdownRemaining: Duration(seconds: 10),
     countdownInitial: Duration(seconds: 0),
-    countdownQueue: [],
-    currentMode: TimerMode.single,
+    countdownQueue: [Duration(seconds: 10), Duration(seconds: 10), Duration(seconds: 10)],
+    currentMode: TimerMode.queue,
     currentIcon: Icons.play_circle_fill,
   );
 }

@@ -46,7 +46,7 @@ class TimerNotifier extends StateNotifier<TimerState> {
     );
   }
 
-  Future<void> cancelAlarm () async {
+  Future<void> cancelAlarm() async {
     await AndroidAlarmManager.cancel(0);
   }
 
@@ -122,8 +122,9 @@ class TimerNotifier extends StateNotifier<TimerState> {
   void startTimers() {
     if (state.isRunning) return;
 
-    updateInitialDuration(state.countdownRemaining);
-
+    if (state.currentMode == TimerMode.single) {
+      updateInitialDuration(state.countdownRemaining);
+    }
     _initializeStopwatch();
     _prepareInitialCountdown();
     _startCountdownTimer();
@@ -143,6 +144,10 @@ class TimerNotifier extends StateNotifier<TimerState> {
         countdownRemaining: nextDuration,
         countdownQueue: newQueue,
       );
+      scheduleAlarm(nextDuration);
+      // Restart the timer loop
+      _countdownTimer?.cancel();
+      _startCountdownTimer();
     } else {
       state = state.copyWith(
         countdownRemaining: Duration.zero,

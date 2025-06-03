@@ -20,5 +20,11 @@ class TimerUtils {
 
     return parts.join(", ");
   }
+
+  String formatQueueForDisplay(List<Duration> queue) {
+    String formattedString = "Queue: ";
+    if (queue.isEmpty) return "${formattedString}Empty";
+    return "$formattedString${queue.map(displayTimeFormatted).join(" → ")}";
+  }
 }
 
