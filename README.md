@@ -21,7 +21,7 @@ A meditation timer/practice app that takes all the features I like into one plac
 ## Possible future features, in no particular order
 
 - Changeable sound
-- A dial for the countdown?
+- [x] A dial for the countdown?
 - Quick cheatsheet/cliffnotes of different styles of practice
   - e.g. TMI, MCTB, Kasina, Metta/loving-kindness, Brahmavihara, etc
 - Kasina images
@@ -37,6 +37,7 @@ A meditation timer/practice app that takes all the features I like into one plac
     - in airplane mode
 - Input mp3 track for guided meditations
   - Built in set of free to use ones maybe?
+  - Yoga Nidra?
 - Index Dhamma talks from other sites that allow it
 - Share session over internet to sit with Sangha
   - Share link?
